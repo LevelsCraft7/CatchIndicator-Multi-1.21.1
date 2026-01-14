@@ -1,0 +1,16 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "catchindicator"
+version = "${version}"
+displayName = "Catch Indicator"
+logoFile="assets/catchindicator/icon.png"
+authors = "OurStory x LevelsFR"
+description = '''
+Empty multi-loader template (NeoForge + Fabric) for Minecraft 1.21.1.
+Start coding on top of this base.
+'''
+#logoFile="assets/ourstorymulti_example/icon.png"
+

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "catchindicator",
+  "version": "${version}",
+  "name": "Catch Indicator",
+  "description": "Empty multi-loader template (NeoForge + Fabric) for Minecraft 1.21.1. Start coding on top of this base.",
+  "authors": [
+    "OurStory x LevelsFR"
+  ],
+  "license": "All Rights Reserved",
+  "icon": "assets/catchindicator/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.levelscraft7.ourstorymulti_example.fabric.CatchIndicatorFabric"
+    ],
+    "client": [
+      "com.levelscraft7.ourstorymulti_example.fabric.client.CatchIndicatorFabricClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.0",
+    "minecraft": "1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8",
+    "fabric-api": "*"
+  }
+}
