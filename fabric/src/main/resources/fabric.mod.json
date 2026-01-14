@@ -12,12 +12,15 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.levelscraft7.ourstorymulti_example.fabric.CatchIndicatorFabric"
+      "com.levelscraft7.catchindicator.fabric.CatchIndicatorFabric"
     ],
     "client": [
-      "com.levelscraft7.ourstorymulti_example.fabric.client.CatchIndicatorFabricClient"
+      "com.levelscraft7.catchindicator.fabric.client.CatchIndicatorFabricClient"
     ]
   },
+  "mixins": [
+    "catchindicator-common.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.18.0",
     "minecraft": "1.21.1",

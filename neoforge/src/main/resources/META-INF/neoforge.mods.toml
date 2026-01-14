@@ -14,3 +14,5 @@ Start coding on top of this base.
 '''
 #logoFile="assets/ourstorymulti_example/icon.png"
 
+[[mixins]]
+config="catchindicator-common.mixins.json"
