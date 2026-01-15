@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -103,21 +104,21 @@ public abstract class PokemonEntityNameMixin {
             if (pokedexSource == null) return DiscoveryStatus.UNKNOWN;
 
             // 1) map-based storage
-            Map<String, ?> discovered = resolveDiscoveredMap(pokedexSource);
+            Map<?, ?> discovered = resolveDiscoveredMap(pokedexSource);
             if (discovered == null) return DiscoveryStatus.UNKNOWN;
 
             String speciesId = safeSpeciesId(pokemon);
             String formId = safeFormId(pokemon);
 
-            Object speciesForms = discovered.get(speciesId);
+            Object speciesForms = mapGetByStringKey(discovered, speciesId);
             if (speciesForms instanceof Map<?, ?> formsMap) {
-                Object register = formsMap.get(formId);
+                Object register = mapGetByStringKey(formsMap, formId);
                 return parseRegister(register);
             }
 
             // Some implementations key by showdown form id directly
-            Object register = discovered.get(speciesId + ":" + formId);
-            if (register == null) register = discovered.get(formId);
+            Object register = mapGetByStringKey(discovered, speciesId + ":" + formId);
+            if (register == null) register = mapGetByStringKey(discovered, formId);
             return parseRegister(register);
         } catch (Throwable t) {
             LOGGER.debug("Failed to resolve discovery status", t);
@@ -125,12 +126,11 @@ public abstract class PokemonEntityNameMixin {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static Map<String, ?> resolveDiscoveredMap(Object pokedexSource) {
+    private static Map<?, ?> resolveDiscoveredMap(Object pokedexSource) {
         Object map = invokeFirst(pokedexSource,
                 "getDiscoveredList", "getDiscoveredEntries", "getDiscovered", "getDiscoveryMap",
                 "getEntries", "entries", "discovered", "discoveredList");
-        if (map instanceof Map<?, ?> m) return (Map<String, ?>) m;
+        if (map instanceof Map<?, ?> m) return m;
 
         // maybe nested in another object
         Object inner = invokeFirst(pokedexSource,
@@ -139,7 +139,7 @@ public abstract class PokemonEntityNameMixin {
             Object map2 = invokeFirst(inner,
                     "getDiscoveredList", "getDiscoveredEntries", "getDiscovered", "getDiscoveryMap",
                     "getEntries", "entries", "discovered", "discoveredList");
-            if (map2 instanceof Map<?, ?> m2) return (Map<String, ?>) m2;
+            if (map2 instanceof Map<?, ?> m2) return m2;
         }
 
         // last resort: scan fields for a Map
@@ -148,10 +148,27 @@ public abstract class PokemonEntityNameMixin {
                 if (Map.class.isAssignableFrom(f.getType())) {
                     f.setAccessible(true);
                     Object v = f.get(pokedexSource);
-                    if (v instanceof Map<?, ?> m3) return (Map<String, ?>) m3;
+                    if (v instanceof Map<?, ?> m3) return m3;
                 }
             }
         } catch (Throwable ignored) {
+        }
+        return null;
+    }
+
+    private static Object mapGetByStringKey(Map<?, ?> map, String key) {
+        if (map == null || key == null) return null;
+
+        // Fast path: direct lookup
+        Object direct = map.get(key);
+        if (direct != null) return direct;
+
+        // Slow path: keys might be ResourceLocation/Identifier/etc. Compare by toString().
+        for (Map.Entry<?, ?> e : map.entrySet()) {
+            Object k = e.getKey();
+            if (k != null && key.equalsIgnoreCase(k.toString())) {
+                return e.getValue();
+            }
         }
         return null;
     }
@@ -256,7 +273,12 @@ public abstract class PokemonEntityNameMixin {
     private static Object invokeStaticFirst(Class<?> clazz, String... names) {
         for (String n : names) {
             try {
-                Method m = clazz.getDeclaredMethod(n);
+                Method m;
+                try {
+                    m = clazz.getDeclaredMethod(n);
+                } catch (NoSuchMethodException e) {
+                    m = clazz.getMethod(n);
+                }
                 m.setAccessible(true);
                 return m.invoke(null);
             } catch (Throwable ignored) {
@@ -269,7 +291,12 @@ public abstract class PokemonEntityNameMixin {
         if (target == null) return null;
         for (String n : names) {
             try {
-                Method m = target.getClass().getDeclaredMethod(n);
+                Method m;
+                try {
+                    m = target.getClass().getDeclaredMethod(n);
+                } catch (NoSuchMethodException e) {
+                    m = target.getClass().getMethod(n);
+                }
                 m.setAccessible(true);
                 return m.invoke(target);
             } catch (Throwable ignored) {
