@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -207,249 +208,23 @@ public abstract class PokemonEntityNameMixin {
 
     private static DiscoveryStatus getDiscoveryStatus(Pokemon pokemon) {
         try {
-            Object pokedexSource = resolvePokedexSource();
-            if (pokedexSource == null) return DiscoveryStatus.UNKNOWN;
-            // Voie officielle Cobblemon : ClientPokedexManager.getCaughtForms / getEncounteredForms
-            DiscoveryStatus clientStatus = catchindicator$tryResolveFromClientPokedexManager(pokemon);
-            if (clientStatus != null) return clientStatus;
+            Object clientPokedexManager = resolveClientPokedexManager();
+            if (clientPokedexManager == null) return DiscoveryStatus.UNKNOWN;
 
-            ResourceLocation speciesRL = safeSpeciesResourceLocation(pokemon);
-            String formId = safeFormId(pokemon);
-            DiscoveryStatus viaRecords = tryResolveFromSpeciesRecords(pokedexSource, speciesRL);
-            if (viaRecords != null) return viaRecords;
-            Object speciesObj = invokeFirst(pokemon, "getSpecies", "species");
+            ResourceLocation speciesId = safeSpeciesResourceLocation(pokemon);
+            if (speciesId == null) return DiscoveryStatus.UNKNOWN;
 
-            // Essai multi clés: certains pokedex utilisent "cobblemon:<id>", d'autres "<id>"
-            String showdown = safeSpeciesId(pokemon);
+            Object record = resolveSpeciesRecord(clientPokedexManager, speciesId);
+            if (record == null) return DiscoveryStatus.UNKNOWN;
 
-            ResourceLocation rlA = speciesRL;
-            if (rlA == null && showdown != null && !showdown.isBlank()) {
-                try {
-                    rlA = ResourceLocation.parse(showdown.contains(":") ? showdown : "cobblemon:" + showdown);
-                } catch (Throwable ignored) {
-                }
-            }
-
-            ResourceLocation rlB = null;
-            if (showdown != null && !showdown.isBlank()) {
-                try {
-                    rlB = ResourceLocation.parse(showdown.contains(":") ? showdown : "minecraft:" + showdown);
-                } catch (Throwable ignored) {
-                }
-            }
-
-            String formA = formId;
-            String formB = (formId == null || formId.isBlank()) ? "normal" : formId;
-
-            // 1) Robust path: try API style calls first (hasCaught, hasSeen) avec variantes
-            Object caught = null;
-            Object seen = null;
-
-            // Variante 0: certaines versions attendent Species ou Pokemon, pas ResourceLocation
-            if (speciesObj != null) {
-                Object caught0 = invokeFirstWithArgs(pokedexSource, new Object[]{ speciesObj, formId },
-                        "hasCaught", "has_caught", "hasCaught$default");
-                if (!(caught0 instanceof Boolean)) {
-                    caught0 = invokeFirstWithArgs(pokedexSource, new Object[]{ speciesObj },
-                            "hasCaught", "has_caught", "hasCaught$default");
-                }
-                if (caught0 instanceof Boolean b && b) return DiscoveryStatus.CAUGHT;
-
-                Object seen0 = invokeFirstWithArgs(pokedexSource, new Object[]{ speciesObj, formId },
-                        "hasSeen", "has_seen", "hasSeen$default");
-                if (!(seen0 instanceof Boolean)) {
-                    seen0 = invokeFirstWithArgs(pokedexSource, new Object[]{ speciesObj },
-                            "hasSeen", "has_seen", "hasSeen$default");
-                }
-                if (seen0 instanceof Boolean b && b) return DiscoveryStatus.SEEN;
-
-            }
-
-// Variante 0 bis: parfois l'API prend directement Pokemon
-            Object caughtP = invokeFirstWithArgs(pokedexSource, new Object[]{ pokemon },
-                    "hasCaught", "has_caught", "hasCaught$default");
-            if (caughtP instanceof Boolean b && b) return DiscoveryStatus.CAUGHT;
-
-            Object seenP = invokeFirstWithArgs(pokedexSource, new Object[]{ pokemon },
-                    "hasSeen", "has_seen", "hasSeen$default");
-            if (seenP instanceof Boolean b && b) return DiscoveryStatus.SEEN;
-
-            ResourceLocation[] rls = new ResourceLocation[]{ rlA, rlB };
-            String[] forms = new String[]{ formA, formB, null };
-
-            for (ResourceLocation rl : rls) {
-                if (rl == null) continue;
-
-                for (String f : forms) {
-                    if (caught == null) {
-                        caught = invokeFirstWithArgs(pokedexSource, new Object[]{ rl, f },
-                                "hasCaught", "has_caught", "hasCaught$default");
-                    }
-                    if (caught == null) {
-                        caught = invokeFirstWithArgs(pokedexSource, new Object[]{ rl },
-                                "hasCaught", "has_caught", "hasCaught$default");
-                    }
-                    if (caught instanceof Boolean b && b) return DiscoveryStatus.CAUGHT;
-
-                    if (seen == null) {
-                        seen = invokeFirstWithArgs(pokedexSource, new Object[]{ rl, f },
-                                "hasSeen", "has_seen", "hasSeen$default");
-                    }
-                    if (seen == null) {
-                        seen = invokeFirstWithArgs(pokedexSource, new Object[]{ rl },
-                                "hasSeen", "has_seen", "hasSeen$default");
-                    }
-                    if (seen instanceof Boolean b && b) return DiscoveryStatus.SEEN;
-                }
-            }
-
-            // 2) Fallback: map based storage (internal structure may vary)
-            Map<?, ?> discovered = resolveDiscoveredMap(pokedexSource);
-            if (discovered == null) return DiscoveryStatus.UNKNOWN;
-
-            String showdownSpecies = safeSpeciesId(pokemon);
-            String speciesKeyA = showdownSpecies;
-            String speciesKeyB = (showdownSpecies != null && !showdownSpecies.contains(":"))
-                    ? "cobblemon:" + showdownSpecies
-                    : showdownSpecies;
-
-            String formKey = (formId == null || formId.isBlank()) ? "normal" : formId;
-
-            Object speciesForms =
-                    mapGetByStringKey(discovered, speciesKeyA) != null ? mapGetByStringKey(discovered, speciesKeyA)
-                            : mapGetByStringKey(discovered, speciesKeyB);
-
-            if (speciesForms instanceof Map<?, ?> formsMap) {
-                Object register = mapGetByStringKey(formsMap, formKey);
-                if (register == null && (formId == null || formId.isBlank())) {
-                    register = mapGetByStringKey(formsMap, "normal");
-                }
-                return parseRegister(register);
-            }
-
-            Object register =
-                    mapGetByStringKey(discovered, speciesKeyA) != null ? mapGetByStringKey(discovered, speciesKeyA)
-                            : mapGetByStringKey(discovered, speciesKeyB);
-
-            if (register == null && formId != null && !formId.isBlank()) {
-                register = mapGetByStringKey(discovered, speciesKeyA + ":" + formId);
-                if (register == null && speciesKeyB != null) {
-                    register = mapGetByStringKey(discovered, speciesKeyB + ":" + formId);
-                }
-            }
-
-            return parseRegister(register);
+            Object progress = invokeFirst(record,
+                    "getEntryProgress", "getProgress",
+                    "entryProgress", "progress");
+            return mapEntryProgress(progress);
         } catch (Throwable t) {
             LOGGER.debug("Failed to resolve discovery status", t);
             return DiscoveryStatus.UNKNOWN;
         }
-    }
-
-    private static Object resolvePokedexEntry(Pokemon pokemon) {
-        Object species = invokeFirst(pokemon, "getSpecies", "species");
-        if (species == null) return null;
-
-        // Le plus probable
-        Object entry = invokeFirst(species, "getPokedexEntry", "pokedexEntry");
-        if (entry != null) return entry;
-
-        // Fallback: scan champs du species pour trouver un PokedexEntry
-        try {
-            for (Field f : species.getClass().getDeclaredFields()) {
-                f.setAccessible(true);
-                Object v = f.get(species);
-                if (v == null) continue;
-
-                String cn = v.getClass().getName();
-                if (cn.endsWith("PokedexEntry") || cn.contains(".api.pokedex.entry.PokedexEntry")) {
-                    return v;
-                }
-            }
-        } catch (Throwable ignored) {
-        }
-
-        return null;
-    }
-
-    private static DiscoveryStatus tryResolveFromSpeciesRecords(Object pokedexSource, ResourceLocation speciesRL) {
-        if (pokedexSource == null || speciesRL == null) return null;
-
-        try {
-            Object recordsObj = invokeFirst(pokedexSource, "getSpeciesRecords", "speciesRecords", "getRecords", "records");
-            if (!(recordsObj instanceof Map<?, ?> records)) return null;
-
-            Object record = records.get(speciesRL);
-            if (record == null) {
-                // fallback string match au cas ou la key est un wrapper
-                record = mapGetByStringKey(records, speciesRL.toString());
-            }
-            if (record == null) return null;
-
-            // 1) Cas simple: méthode progress() ou getProgress() retourne un enum ou string
-            Object progress = invokeFirst(record, "getProgress", "progress", "getEntryProgress", "entryProgress");
-            if (progress != null) {
-                String s = progress.toString();
-                if (s.contains("CAUGHT")) return DiscoveryStatus.CAUGHT;
-                if (s.contains("ENCOUNTERED")) return DiscoveryStatus.SEEN;
-                if (s.contains("NONE")) return DiscoveryStatus.UNKNOWN;
-            }
-
-            // 2) Cas simple: booleans
-            Object caught = invokeFirst(record, "isCaught", "getCaught", "caught");
-            if (caught instanceof Boolean b && b) return DiscoveryStatus.CAUGHT;
-
-            Object encountered = invokeFirst(record, "isEncountered", "getEncountered", "encountered", "isSeen", "getSeen", "seen");
-            if (encountered instanceof Boolean b && b) return DiscoveryStatus.SEEN;
-
-            // 3) Dernier recours: scan fields pour trouver un enum progress dedans
-            try {
-                for (Field f : record.getClass().getDeclaredFields()) {
-                    f.setAccessible(true);
-                    Object v = f.get(record);
-                    if (v == null) continue;
-
-                    String s = v.toString();
-                    if (s.contains("CAUGHT")) return DiscoveryStatus.CAUGHT;
-                    if (s.contains("ENCOUNTERED")) return DiscoveryStatus.SEEN;
-                }
-            } catch (Throwable ignored) {
-            }
-
-            return DiscoveryStatus.UNKNOWN;
-        } catch (Throwable ignored) {
-            return null;
-        }
-    }
-
-
-    private static Map<?, ?> resolveDiscoveredMap(Object pokedexSource) {
-        Object map = invokeFirst(pokedexSource,
-                "getDiscoveredList", "getDiscoveredEntries", "getDiscovered", "getDiscoveryMap",
-                "getEntries", "entries", "discovered", "discoveredList");
-        if (map instanceof Map<?, ?> m) return m;
-
-        // maybe nested in another object
-        Object inner = invokeFirst(pokedexSource,
-                "getPokedex", "pokedex", "getPokedexManager", "getPokedexData", "getPokedexState");
-        if (inner != null) {
-            Object map2 = invokeFirst(inner,
-                    "getDiscoveredList", "getDiscoveredEntries", "getDiscovered", "getDiscoveryMap",
-                    "getEntries", "entries", "discovered", "discoveredList");
-            if (map2 instanceof Map<?, ?> m2) return m2;
-        }
-
-        // last resort: scan fields for a Map
-        try {
-            for (Field f : pokedexSource.getClass().getDeclaredFields()) {
-                if (Map.class.isAssignableFrom(f.getType())) {
-                    f.setAccessible(true);
-                    Object v = f.get(pokedexSource);
-                    if (v instanceof Map<?, ?> m3) return m3;
-                }
-            }
-        } catch (Throwable ignored) {
-        }
-        return null;
     }
 
     private static Object mapGetByStringKey(Map<?, ?> map, String key) {
@@ -469,27 +244,6 @@ public abstract class PokemonEntityNameMixin {
         return null;
     }
 
-    private static DiscoveryStatus parseRegister(Object register) {
-        if (register == null) return DiscoveryStatus.UNKNOWN;
-
-        // field "status"
-        Object statusField = readFieldIfExists(register, "status");
-        if (statusField != null) return DiscoveryStatus.fromString(statusField.toString());
-
-        // methods like getStatus()
-        Object statusMethod = invokeFirst(register, "getStatus", "status");
-        if (statusMethod != null) return DiscoveryStatus.fromString(statusMethod.toString());
-
-        // boolean style
-        Object caught = invokeFirst(register, "isCaught", "getCaught", "caught");
-        if (caught instanceof Boolean b && b) return DiscoveryStatus.CAUGHT;
-
-        Object seen = invokeFirst(register, "isSeen", "getSeen", "seen");
-        if (seen instanceof Boolean b && b) return DiscoveryStatus.SEEN;
-
-        return DiscoveryStatus.UNKNOWN;
-    }
-
     private static String safeSpeciesId(Pokemon pokemon) {
         try {
             Object species = invokeFirst(pokemon, "getSpecies", "species");
@@ -497,24 +251,6 @@ public abstract class PokemonEntityNameMixin {
             return id != null ? id.toString() : "";
         } catch (Throwable ignored) {
             return "";
-        }
-    }
-
-    private static String safeFormId(Pokemon pokemon) {
-        try {
-            Object form = invokeFirst(pokemon, "getForm", "form");
-            Object id = invokeFirst(form,
-                    "formOnlyShowdownId", "getFormOnlyShowdownId",
-                    "name", "getName",
-                    "showdownId", "getShowdownId",
-                    "id", "getId");
-            String s = (id != null) ? id.toString() : null;
-
-            if (s == null || s.isBlank()) return null;
-            if (s.equalsIgnoreCase("normal")) return null;
-            return s;
-        } catch (Throwable ignored) {
-            return null;
         }
     }
 
@@ -538,28 +274,6 @@ public abstract class PokemonEntityNameMixin {
         } catch (Throwable ignored) {
             return null;
         }
-    }
-
-    private static Object resolvePokedexSource() {
-        Object clientSingleton = resolveCobblemonClientSingleton();
-        if (clientSingleton != null) {
-            // Cobblemon 1.21.x: source fiable côté client
-            Object clientPokedex = invokeFirst(clientSingleton,
-                    "getClientPokedexData", "getClientPokedexManager", "clientPokedex", "clientPokedexData");
-            if (clientPokedex != null) return clientPokedex;
-
-            // Fallback anciens noms
-            Object pokedex = invokeFirst(clientSingleton,
-                    "getPokedex", "pokedex", "getPokedexManager", "getPokedexData",
-                    "getPokedexState", "getPlayerPokedex", "getDiscoveredList", "getDiscoveredEntries");
-            return pokedex != null ? pokedex : clientSingleton;
-        }
-
-
-        // Fall back to player-attached data, if present
-        Object player = Minecraft.getInstance().player;
-        return invokeFirst(player,
-                "getPokedex", "pokedex", "getCobblemonPokedex", "getPokedexData", "getPokedexManager");
     }
 
     private static Object resolveCobblemonClientSingleton() {
@@ -598,6 +312,14 @@ public abstract class PokemonEntityNameMixin {
         } catch (Throwable ignored) {
             return null;
         }
+    }
+
+    private static Object readFieldIfExists(Object target, String... fieldNames) {
+        for (String fieldName : fieldNames) {
+            Object value = readFieldIfExists(target, fieldName);
+            if (value != null) return value;
+        }
+        return null;
     }
 
     private static Object invokeStaticFirst(Class<?> clazz, String... names) {
@@ -659,34 +381,49 @@ public abstract class PokemonEntityNameMixin {
     }
 
     @Unique
-    private static DiscoveryStatus catchindicator$tryResolveFromClientPokedexManager(Pokemon pokemon) {
+    private static Object resolveClientPokedexManager() {
+        Object cobblemonClient = resolveCobblemonClientSingleton();
+        if (cobblemonClient != null) {
+            Object manager = invokeFirst(cobblemonClient,
+                    "getClientPokedexManager", "getClientPokedexData");
+            if (manager != null) return manager;
+
+            manager = readFieldIfExists(cobblemonClient, "clientPokedexManager", "clientPokedexData");
+            if (manager != null) return manager;
+        }
+
         try {
-            Object cobblemonClient = resolveCobblemonClientSingleton();
-            if (cobblemonClient == null) return null;
-
-            Object clientDex = invokeFirst(cobblemonClient, "getClientPokedexData");
-            if (clientDex == null) return null;
-
-            Object species = invokeFirst(pokemon, "getSpecies", "species");
-            if (species == null) return null;
-
-            Object entry = invokeFirst(species, "getPokedexEntry", "pokedexEntry");
-            if (entry == null) return null;
-
-            Object caughtFormsObj = invokeFirstWithArgs(clientDex, new Object[]{ entry }, "getCaughtForms");
-            if (caughtFormsObj instanceof java.util.Collection<?> c && !c.isEmpty()) {
-                return DiscoveryStatus.CAUGHT;
-            }
-
-            Object encounteredFormsObj = invokeFirstWithArgs(clientDex, new Object[]{ entry }, "getEncounteredForms");
-            if (encounteredFormsObj instanceof java.util.Collection<?> e && !e.isEmpty()) {
-                return DiscoveryStatus.SEEN;
-            }
-
-            return DiscoveryStatus.UNKNOWN;
+            Class<?> clazz = Class.forName("com.cobblemon.mod.common.client.ClientPokedexManager");
+            Object instance = readStaticFieldIfExists(clazz, "INSTANCE");
+            if (instance != null) return instance;
+            return invokeStaticFirst(clazz, "getInstance", "instance");
         } catch (Throwable ignored) {
             return null;
         }
+    }
+
+    @Unique
+    private static Object resolveSpeciesRecord(Object clientPokedexManager, ResourceLocation speciesId) {
+        if (clientPokedexManager == null || speciesId == null) return null;
+
+        Object recordsObj = invokeFirst(clientPokedexManager,
+                "getSpeciesRecords", "speciesRecords", "getRecords", "records");
+        if (recordsObj instanceof Map<?, ?> records) {
+            Object record = records.get(speciesId);
+            if (record != null) return record;
+            return mapGetByStringKey(records, speciesId.toString());
+        }
+        return null;
+    }
+
+    @Unique
+    private static DiscoveryStatus mapEntryProgress(Object progress) {
+        if (progress == null) return DiscoveryStatus.UNKNOWN;
+
+        String normalized = progress.toString().toUpperCase(Locale.ROOT);
+        if (normalized.contains("CAUGHT")) return DiscoveryStatus.CAUGHT;
+        if (normalized.contains("SEEN") || normalized.contains("ENCOUNTERED")) return DiscoveryStatus.SEEN;
+        return DiscoveryStatus.UNKNOWN;
     }
 
 }
