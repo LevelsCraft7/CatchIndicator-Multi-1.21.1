@@ -9,8 +9,7 @@ displayName = "Catch Indicator"
 logoFile="assets/catchindicator/icon.png"
 authors = "OurStory x LevelsFR"
 description = '''
-Empty multi-loader template (NeoForge + Fabric) for Minecraft 1.21.1.
-Start coding on top of this base.
+Shows a small indicator next to wild Pokémon names based on your Pokédex status (caught, seen, unknown).
 '''
 #logoFile="assets/ourstorymulti_example/icon.png"
 

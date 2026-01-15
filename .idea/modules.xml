@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/catchindicator.iml" filepath="$PROJECT_DIR$/.idea/modules/catchindicator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/catchindicator.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/catchindicator.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/catchindicator.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/catchindicator.common.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/catchindicator.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/catchindicator.common.test.iml" />

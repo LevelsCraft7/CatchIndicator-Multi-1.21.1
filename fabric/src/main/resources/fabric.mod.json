@@ -3,7 +3,7 @@
   "id": "catchindicator",
   "version": "${version}",
   "name": "Catch Indicator",
-  "description": "Empty multi-loader template (NeoForge + Fabric) for Minecraft 1.21.1. Start coding on top of this base.",
+  "description": "Shows a small indicator next to wild Pokémon names based on your Pokédex status (caught, seen, unknown).",
   "authors": [
     "OurStory x LevelsFR"
   ],

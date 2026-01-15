@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "catchindicator:textures/misc/pokeball_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\ue100"]
+    }
+  ]
+}

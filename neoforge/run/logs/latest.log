@@ -1,69 +1,363 @@
-[18:25:30] [main/INFO] (Launcher) ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.200, --assetIndex, 1.21.1-17, --assetsDir, C:\Users\salig\.gradle\caches\fabric-loom\assets, --gameDir, ., --fml.fmlVersion, 4.0.41, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.200, --fml.neoFormVersion, 20240808.144430]
-[18:25:30] [main/INFO] (Launcher) JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.8+9-LTS
-[18:25:30] [main/INFO] (Launcher) ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.8 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
-[18:25:30] [main/INFO] (unprotect) Initializing Unprotect using ModLauncher backend, target: Minecraft and loader classes (minecraft+forge)
-[18:25:30] [main/INFO] (ImmediateWindowHandler) Loading ImmediateWindowProvider fmlearlywindow
-[18:25:30] [main/INFO] (EARLYDISPLAY) Trying GL version 4.6
-[18:25:30] [main/INFO] (EARLYDISPLAY) Requested GL version 4.6 got version 4.6
-[18:25:30] [main/INFO] (mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/salig/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23126!/ Service=ModLauncher Env=CLIENT
-[18:25:30] [main/INFO] (ModDiscoverer) Found mod file "neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar" [locator: neoforge devenv provider ([C:\Users\salig\.gradle\caches\fabric-loom\minecraftMaven\net\minecraft\neoforge-21.1.200-minecraft-merged\1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200\neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar])]
-[18:25:30] [pool-5-thread-1/INFO] (EARLYDISPLAY) GL info: AMD Radeon RX 9070 XT GL version 4.6.0 Core Profile Context 25.12.1.251128, ATI Technologies Inc.
-[18:25:30] [main/INFO] (ModDiscoverer) Found mod file "neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar" [locator: neoforge devenv provider ([C:\Users\salig\.gradle\caches\fabric-loom\minecraftMaven\net\minecraft\neoforge-21.1.200-minecraft-merged\1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200\neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar])]
-[18:25:30] [main/INFO] (ModDiscoverer) Found mod file "main" [locator: userdev mods and services, reader: mod manifest]
-[18:25:30] [main/INFO] (ModDiscoverer) Found mod file "neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar" [locator: userdev mods and services, reader: mod manifest]
-[18:25:30] [main/INFO] (ModDiscoverer) Found mod file "architectury-neoforge-8fb23f36-13.0.8.jar" [locator: userdev mods and services, reader: mod manifest]
-[18:25:30] [main/INFO] (ModDiscoverer) Found mod file "3808737692380436308.jar" [locator: userdev mods and services, reader: mod manifest]
-[18:25:30] [main/INFO] (ModDiscoverer) Found gamelibrary file "mixinextras-neoforge-0.5.0.jar" [locator: userdev mods and services, reader: mod manifest]
-[18:25:31] [main/WARN] (JarSelector) Attempted to select a dependency jar for JarJar which was passed in as source: library:mixinextras.neoforge. Using Mod File: C:\Users\salig\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar
-[18:25:31] [main/INFO] (JarInJarDependencyLocator) Found 1 dependencies adding them to mods collection
-[18:25:31] [main/INFO] (ModDiscoverer) Found library file "net.neoforged.neoforge-coremods-21.1.200.jar" [parent: neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar, locator: jarinjar, reader: mod manifest]
-[18:25:31] [main/INFO] (ModDiscoverer) 
+[18:31:32] [main/INFO] (Launcher) ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.200, --assetIndex, 1.21.1-17, --assetsDir, C:\Users\salig\.gradle\caches\fabric-loom\assets, --gameDir, ., --fml.fmlVersion, 4.0.41, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.200, --fml.neoFormVersion, 20240808.144430]
+[18:31:32] [main/INFO] (Launcher) JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.8+9-LTS
+[18:31:32] [main/INFO] (Launcher) ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.8 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[18:31:32] [main/INFO] (unprotect) Initializing Unprotect using ModLauncher backend, target: Minecraft and loader classes (minecraft+forge)
+[18:31:32] [main/INFO] (ImmediateWindowHandler) Loading ImmediateWindowProvider fmlearlywindow
+[18:31:32] [main/INFO] (EARLYDISPLAY) Trying GL version 4.6
+[18:31:32] [main/INFO] (EARLYDISPLAY) Requested GL version 4.6 got version 4.6
+[18:31:32] [main/INFO] (mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/salig/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23126!/ Service=ModLauncher Env=CLIENT
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar" [locator: neoforge devenv provider ([C:\Users\salig\.gradle\caches\fabric-loom\minecraftMaven\net\minecraft\neoforge-21.1.200-minecraft-merged\1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200\neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar])]
+[18:31:33] [pool-5-thread-1/INFO] (EARLYDISPLAY) GL info: AMD Radeon RX 9070 XT GL version 4.6.0 Core Profile Context 25.12.1.251128, ATI Technologies Inc.
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar" [locator: neoforge devenv provider ([C:\Users\salig\.gradle\caches\fabric-loom\minecraftMaven\net\minecraft\neoforge-21.1.200-minecraft-merged\1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200\neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar])]
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "Cobblemon-neoforge-1.7.1+1.21.1.jar" [locator: {mods folder locator at B:\MUTLI LOADER JAVA\CatchIndicator\neoforge\run\mods}, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlinforforge-5.10.0-all.jar" [locator: {mods folder locator at B:\MUTLI LOADER JAVA\CatchIndicator\neoforge\run\mods}, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "main" [locator: userdev mods and services, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar" [locator: userdev mods and services, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "architectury-neoforge-8fb23f36-13.0.8.jar" [locator: userdev mods and services, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "cobblemon-8fb23f36-Uz1QF4Md.jar" [locator: userdev mods and services, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "8193859494227481104.jar" [locator: userdev mods and services, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found gamelibrary file "mixinextras-neoforge-0.5.0.jar" [locator: userdev mods and services, reader: mod manifest]
+[18:31:33] [main/WARN] (JarSelector) Attempted to select a dependency jar for JarJar which was passed in as source: library:mixinextras.neoforge. Using Mod File: C:\Users\salig\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar
+[18:31:33] [main/INFO] (JarInJarDependencyLocator) Found 12 dependencies adding them to mods collection
+[18:31:33] [main/INFO] (ModDiscoverer) Found gamelibrary file "thedarkcolour.kfflib-5.10.0.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlinx-serialization-core-jvm-1.9.0.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found mod file "thedarkcolour.kffmod-5.10.0.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlinx-coroutines-jdk8-1.10.2.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlin-stdlib-2.2.20.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlin-reflect-2.2.20.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlinx-serialization-json-jvm-1.9.0.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlinx-coroutines-core-jvm-1.10.2.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "net.neoforged.neoforge-coremods-21.1.200.jar" [parent: neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar, locator: jarinjar, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlin-stdlib-jdk7-2.2.20.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "kotlin-stdlib-jdk8-2.2.20.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar]
+[18:31:33] [main/INFO] (ModDiscoverer) Found library file "thedarkcolour.kfflang-5.10.0.jar" [parent: kotlinforforge-5.10.0-all.jar, locator: jarinjar, reader: mod manifest]
+[18:31:33] [main/INFO] (ModDiscoverer) 
      Mod List:
 		Name Version (Mod Id)
 
 		Architectury 13.0.8 (architectury)
 		Catch Indicator 1.0 (catchindicator)
-		generated_68f77f8 1 (generated_68f77f8)
+		Cobblemon 1.7.1+1.21.1 (cobblemon)
+		generated_4c7d9e1 1 (generated_4c7d9e1)
+		Kotlin For Forge 5.10.0 (kotlinforforge)
 		Minecraft 1.21.1 (minecraft)
 		NeoForge 21.1.200 (neoforge)
-[18:25:31] [main/INFO] (LaunchServiceHandler) Launching target 'forgeclientdev' with arguments [--version, 21.1.200, --gameDir, ., --assetsDir, C:\Users\salig\.gradle\caches\fabric-loom\assets, --assetIndex, 1.21.1-17]
-[18:25:31] [main/INFO] (unprotect) Found 8254 Minecraft classes
-[18:25:32] [main/INFO] (MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
-[14janv.2026 18:25:33.918] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 330 milliseconds
-[14janv.2026 18:25:34.130] [main/WARN] [oshi.driver.windows.perfmon.PerfmonDisabled/]: Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
-[14janv.2026 18:25:38.889] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[14janv.2026 18:25:38.890] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
-[14janv.2026 18:25:38.892] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[14janv.2026 18:25:38.892] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[14janv.2026 18:25:38.894] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[14janv.2026 18:25:39.005] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/salig/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/neoforge-21.1.200-minecraft-merged/1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200/neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23200!/assets/.mcassetsroot' uses unexpected schema
-[14janv.2026 18:25:39.005] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/salig/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/neoforge-21.1.200-minecraft-merged/1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200/neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23200!/data/.mcassetsroot' uses unexpected schema
-[14janv.2026 18:25:39.037] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[14janv.2026 18:25:39.047] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
-[14janv.2026 18:25:39.120] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
-[14janv.2026 18:25:39.484] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.200, for MC 1.21.1
-[14janv.2026 18:25:39.513] [modloading-worker-0/INFO] [CatchIndicator/]: [catchindicator] Common init OK
-[14janv.2026 18:25:40.185] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: []
-[14janv.2026 18:25:40.287] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/generated_68f77f8, mod/catchindicator, mod/architectury, mod/neoforge
-[14janv.2026 18:25:40.478] [Worker-Main-13/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
-[14janv.2026 18:25:40.478] [Worker-Main-10/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
-[14janv.2026 18:25:41.869] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
-[14janv.2026 18:25:41.869] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
-[14janv.2026 18:25:41.934] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Headphones (Elgato Wave:XLR)
-[14janv.2026 18:25:41.936] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
-[14janv.2026 18:25:42.015] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
-[14janv.2026 18:25:42.024] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
-[14janv.2026 18:25:42.024] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
-[14janv.2026 18:25:42.024] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
-[14janv.2026 18:25:42.025] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
-[14janv.2026 18:25:42.028] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
-[14janv.2026 18:25:42.028] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
-[14janv.2026 18:25:42.028] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
-[14janv.2026 18:25:42.028] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
-[14janv.2026 18:25:42.201] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
-[14janv.2026 18:25:42.204] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
-[14janv.2026 18:25:42.205] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
-[14janv.2026 18:25:42.205] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
-[14janv.2026 18:25:42.205] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
-[14janv.2026 18:25:42.248] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
-[14janv.2026 18:25:42.335] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[18:31:34] [main/INFO] (mixin) Compatibility level set to JAVA_21
+[18:31:34] [main/INFO] (LaunchServiceHandler) Launching target 'forgeclientdev' with arguments [--version, 21.1.200, --gameDir, ., --assetsDir, C:\Users\salig\.gradle\caches\fabric-loom\assets, --assetIndex, 1.21.1-17]
+[18:31:34] [main/INFO] (unprotect) Found 8254 Minecraft classes
+[18:31:34] [main/WARN] (mixin) Error loading class: juuxel/adorn/block/variant/BlockVariantSets (java.lang.ClassNotFoundException: juuxel.adorn.block.variant.BlockVariantSets)
+[18:31:34] [main/WARN] (mixin) @Mixin target juuxel.adorn.block.variant.BlockVariantSets was not found mixins.cobblemon-common.json:invoker.AdornRegisterInvoker from mod cobblemon
+[18:31:35] [main/INFO] (MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[15janv.2026 18:31:37.151] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 425 milliseconds
+[15janv.2026 18:31:37.254] [main/WARN] [oshi.driver.windows.perfmon.PerfmonDisabled/]: Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
+[15janv.2026 18:31:42.398] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[15janv.2026 18:31:42.399] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[15janv.2026 18:31:42.401] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[15janv.2026 18:31:42.403] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[15janv.2026 18:31:42.405] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[15janv.2026 18:31:42.571] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/salig/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/neoforge-21.1.200-minecraft-merged/1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200/neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23202!/assets/.mcassetsroot' uses unexpected schema
+[15janv.2026 18:31:42.572] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/salig/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/neoforge-21.1.200-minecraft-merged/1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200/neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23202!/data/.mcassetsroot' uses unexpected schema
+[15janv.2026 18:31:42.602] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[15janv.2026 18:31:42.610] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[15janv.2026 18:31:42.714] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[15janv.2026 18:31:43.137] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.200, for MC 1.21.1
+[15janv.2026 18:31:43.192] [modloading-worker-0/INFO] [CatchIndicator/]: [catchindicator] Common init OK
+[15janv.2026 18:31:43.487] [modloading-worker-0/INFO] [thedarkcolour.kotlinforforge.neoforge.test.KotlinForForge/]: Kotlin For Forge Enabled!
+[15janv.2026 18:31:43.508] [modloading-worker-0/INFO] [com.cobblemon.mod.common.Cobblemon/]: Booting LaxPermissionValidator, permissions will be checked using Minecrafts permission level system, see https://minecraft.fandom.com/wiki/Permission_level
+[15janv.2026 18:31:43.510] [modloading-worker-0/INFO] [com.cobblemon.mod.common.Cobblemon/]: Launching Cobblemon 1.7.1 
+[15janv.2026 18:31:43.511] [modloading-worker-0/INFO] [com.cobblemon.mod.common.Cobblemon/]: Booting ForgePermissionApiPermissionValidator, player permissions will be checked using MinecraftForge' PermissionAPI, non player command sources will use Minecraft' permission level system, see https://docs.minecraftforge.net/en/latest/ and https://minecraft.fandom.com/wiki/Permission_level
+[15janv.2026 18:31:44.211] [modloading-worker-0/INFO] [com.cobblemon.mod.common.Cobblemon/]: Starting the Best Spawner...
+[15janv.2026 18:31:44.215] [modloading-worker-0/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 7 spawning condition types.
+[15janv.2026 18:31:44.223] [modloading-worker-0/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 6 spawnable position types.
+[15janv.2026 18:31:44.228] [modloading-worker-0/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 3 spawn detail types.
+[15janv.2026 18:31:46.319] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: []
+[15janv.2026 18:31:46.441] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/catchindicator, mod/kotlinforforge, mod/architectury, mod/generated_4c7d9e1, mod/neoforge, mod/cobblemon
+[15janv.2026 18:31:46.450] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Initializing...
+[15janv.2026 18:31:46.452] [Cobblemon Showdown/INFO] [com.cobblemon.mod.common.Cobblemon/]: Starting showdown service...
+[15janv.2026 18:31:46.549] [Worker-Main-1/WARN] [net.minecraft.client.gui.font.FontManager/]: Failed to load builder (catchindicator:default: builder #0 from pack mod/generated_4c7d9e1), rejecting
+java.io.FileNotFoundException: catchindicator:textures/textures/misc/pokeball_icon.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.method_43043(ResourceProvider.java:23) ~[neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23202!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:23) ~[neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23202!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.open(ResourceProvider.java:27) ~[neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23202!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.font.providers.BitmapProvider$Definition.load(BitmapProvider.java:131) ~[neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23202!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.font.FontManager.method_51616(FontManager.java:210) ~[neoforge-21.1.200-minecraft-merged-1.21.1-loom.mappings.1_21_1.layered+hash.40359-v2-neoforge-21.1.200.jar%23202!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) [?:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760) [?:?]
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387) [?:?]
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1312) [?:?]
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843) [?:?]
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808) [?:?]
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188) [?:?]
+[15janv.2026 18:31:46.565] [Worker-Main-15/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
+[15janv.2026 18:31:46.577] [Worker-Main-11/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
+[15janv.2026 18:31:46.615] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/vanilla/LICENSE, ignoring
+[15janv.2026 18:31:46.616] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/request/LICENSE, ignoring
+[15janv.2026 18:31:46.616] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/pokemon/LICENSE, ignoring
+[15janv.2026 18:31:46.616] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/pokemon/0218_slugma/LICENSE, ignoring
+[15janv.2026 18:31:46.619] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/moves/LICENSE, ignoring
+[15janv.2026 18:31:46.621] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/water/LICENSE, ignoring
+[15janv.2026 18:31:46.622] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/status/LICENSE, ignoring
+[15janv.2026 18:31:46.624] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/sparkle/LICENSE, ignoring
+[15janv.2026 18:31:46.624] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/smoke/LICENSE, ignoring
+[15janv.2026 18:31:46.625] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/ring/LICENSE, ignoring
+[15janv.2026 18:31:46.626] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/psychic/LICENSE, ignoring
+[15janv.2026 18:31:46.628] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/orb/LICENSE, ignoring
+[15janv.2026 18:31:46.628] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/mud/LICENSE, ignoring
+[15janv.2026 18:31:46.629] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/impact/LICENSE, ignoring
+[15janv.2026 18:31:46.629] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/ice/LICENSE, ignoring
+[15janv.2026 18:31:46.630] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/grass/LICENSE, ignoring
+[15janv.2026 18:31:46.630] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/goo/LICENSE, ignoring
+[15janv.2026 18:31:46.630] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/fire/LICENSE, ignoring
+[15janv.2026 18:31:46.631] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/electricity/LICENSE, ignoring
+[15janv.2026 18:31:46.632] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/bubble/LICENSE, ignoring
+[15janv.2026 18:31:46.632] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/generic/LICENSE, ignoring
+[15janv.2026 18:31:46.633] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/balls/ultraball/casual/LICENSE, ignoring
+[15janv.2026 18:31:46.633] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/balls/ultraball/battle/LICENSE, ignoring
+[15janv.2026 18:31:46.633] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/balls/ultraball/LICENSE, ignoring
+[15janv.2026 18:31:46.633] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/balls/timerball/casual/LICENSE, ignoring
+[15janv.2026 18:31:46.634] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/balls/timerball/battle/LICENSE, ignoring
+[15janv.2026 18:31:46.634] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/balls/timerball/LICENSE, ignoring
+[15janv.2026 18:31:46.647] [Worker-Main-23/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:textures/particle/balls/LICENSE, ignoring
+[15janv.2026 18:31:46.713] [Worker-Main-10/WARN] [net.minecraft.client.sounds.SoundManager/]: File cobblemon:sounds/pokemon/ponyta/galarian_ponyta_cry.ogg does not exist, cannot add it to event cobblemon:pokemon.ponyta_galar.cry
+[15janv.2026 18:31:46.861] [Worker-Main-22/WARN] [net.minecraft.client.renderer.texture.SpriteLoader/]: Texture cobblemon:item/fishing/bobber_hook with size 8x8 limits mip level from 4 to 3
+[15janv.2026 18:31:50.796] [Cobblemon Showdown/INFO] [com.cobblemon.mod.common.Cobblemon/]: Showdown has been started!
+[15janv.2026 18:31:50.798] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Note: Cobblemon data registries are only loaded once per server instance as Pokémon species are not safe to reload.
+[15janv.2026 18:31:50.798] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:molang registry
+[15janv.2026 18:31:50.801] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:species_features registry
+[15janv.2026 18:31:50.803] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:global_species_features registry
+[15janv.2026 18:31:50.804] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:species_feature_assignments registry
+[15janv.2026 18:31:50.817] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:action_effects registry
+[15janv.2026 18:31:50.818] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:moves registry
+[15janv.2026 18:31:50.821] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:abilities registry
+[15janv.2026 18:31:50.822] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:behaviours registry
+[15janv.2026 18:31:50.822] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:species registry
+[15janv.2026 18:31:50.824] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:species_additions registry
+[15janv.2026 18:31:50.824] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:pokeballs registry
+[15janv.2026 18:31:50.824] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:properties_tab_completion registry
+[15janv.2026 18:31:50.825] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:spawn_detail_presets registry
+[15janv.2026 18:31:50.830] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:spawn_rules registry
+[15janv.2026 18:31:50.845] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:mechanics registry
+[15janv.2026 18:31:50.845] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:bag_items registry
+[15janv.2026 18:31:50.846] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:held_items registry
+[15janv.2026 18:31:50.849] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:dialogues registry
+[15janv.2026 18:31:50.850] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:natural_materials registry
+[15janv.2026 18:31:50.851] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:fossils registry
+[15janv.2026 18:31:50.855] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:npc_preset registry
+[15janv.2026 18:31:50.857] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:npc registry
+[15janv.2026 18:31:50.857] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:dex_entries registry
+[15janv.2026 18:31:50.859] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:dex_entry_additions registry
+[15janv.2026 18:31:50.862] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:dexes registry
+[15janv.2026 18:31:50.863] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:dex_additions registry
+[15janv.2026 18:31:50.864] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:cosmetic_items registry
+[15janv.2026 18:31:50.866] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:callbacks registry
+[15janv.2026 18:31:50.868] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:unlockable_pc_box_wallpapers registry
+[15janv.2026 18:31:50.869] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:marks registry
+[15janv.2026 18:31:50.870] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:starters registry
+[15janv.2026 18:31:50.877] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:spawn_pool_world registry
+[15janv.2026 18:31:50.878] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:pokerods registry
+[15janv.2026 18:31:50.885] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:berries registry
+[15janv.2026 18:31:50.886] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:seasonings registry
+[15janv.2026 18:31:50.891] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:pokemon_interactions registry
+[15janv.2026 18:31:50.891] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:spawn_bait_effects registry
+[15janv.2026 18:31:50.894] [Worker-Main-3/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registered the cobblemon:ride_settings registry
+[15janv.2026 18:31:51.011] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Initializing Cobblemon client
+[15janv.2026 18:31:51.044] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering Pokémon renderer
+[15janv.2026 18:31:51.156] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering PokéBall renderer
+[15janv.2026 18:31:51.157] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering Boat renderer
+[15janv.2026 18:31:51.157] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering Boat with Chest renderer
+[15janv.2026 18:31:51.157] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering Generic Bedrock renderer
+[15janv.2026 18:31:51.158] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering Generic Bedrock Entity renderer
+[15janv.2026 18:31:51.158] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering PokeRod Bobber renderer
+[15janv.2026 18:31:51.158] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering NPC renderer
+[15janv.2026 18:31:51.165] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Registering custom BuiltinItemRenderers
+[15janv.2026 18:31:51.528] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[15janv.2026 18:31:51.529] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[15janv.2026 18:31:51.565] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Headphones (Elgato Wave:XLR)
+[15janv.2026 18:31:51.565] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[15janv.2026 18:31:51.674] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x4 minecraft:textures/atlas/blocks.png-atlas
+[15janv.2026 18:31:51.686] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[15janv.2026 18:31:51.687] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[15janv.2026 18:31:51.689] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[15janv.2026 18:31:51.691] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[15janv.2026 18:31:51.697] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[15janv.2026 18:31:51.697] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[15janv.2026 18:31:51.697] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[15janv.2026 18:31:51.698] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[15janv.2026 18:31:51.780] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 4096x1024x0 minecraft:textures/atlas/particles.png-atlas
+[15janv.2026 18:31:51.785] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[15janv.2026 18:31:51.785] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[15janv.2026 18:31:51.785] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[15janv.2026 18:31:51.786] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[15janv.2026 18:31:51.937] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_cutout could not find uniform named IViewRotMat in the specified shader program.
+[15janv.2026 18:31:51.943] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent could not find uniform named IViewRotMat in the specified shader program.
+[15janv.2026 18:31:51.981] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[15janv.2026 18:31:52.052] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader cobblemon:particle_add could not find sampler named Sampler2 in the specified shader program.
+[15janv.2026 18:31:52.053] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader cobblemon:particle_cutout could not find sampler named Sampler2 in the specified shader program.
+[15janv.2026 18:31:52.061] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[15janv.2026 18:31:52.061] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 cobblemon:textures/atlas/berries.png-atlas
+[15janv.2026 18:31:52.062] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loading assets...
+[15janv.2026 18:31:52.062] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loading particle effects...
+[15janv.2026 18:31:52.230] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 968 particle effects
+[15janv.2026 18:31:52.246] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loading animations...
+[15janv.2026 18:31:54.383] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 8696 animations from 966 animation groups
+[15janv.2026 18:31:54.383] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loading varying Bedrock assets...
+[15janv.2026 18:31:54.699] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 1116 models.
+[15janv.2026 18:31:54.920] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 1030 posers.
+[15janv.2026 18:31:54.961] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 2636 variations.
+[15janv.2026 18:31:54.966] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 72 berry models
+[15janv.2026 18:31:54.968] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 5 misc models
+[15janv.2026 18:31:54.968] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded assets
+[15janv.2026 18:32:03.673] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 2006 recipes
+[15janv.2026 18:32:03.859] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2118 advancements
+[15janv.2026 18:32:03.865] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 10 server scripts and 1 client scripts
+[15janv.2026 18:32:06.182] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 936 moves
+[15janv.2026 18:32:06.248] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 314 abilities
+[15janv.2026 18:32:06.355] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 48 entity behaviours
+[15janv.2026 18:32:06.860] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Finished additions
+[15janv.2026 18:32:07.114] [cobblemon Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 4 Datafixer optimizations took 2 milliseconds
+[15janv.2026 18:32:07.617] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 1025 Pokémon species
+[15janv.2026 18:32:07.630] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 27 spawn detail presets.
+[15janv.2026 18:32:07.648] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Starting dummy Showdown battle to force it to pre-load data.
+[15janv.2026 18:32:08.484] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Imported 266 held item IDs from showdown
+[15janv.2026 18:32:08.515] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 15 fossils
+[15janv.2026 18:32:08.568] [Render thread/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:dex_entry_additions/README.md, ignoring
+[15janv.2026 18:32:08.587] [Render thread/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:dex_additions/README.md, ignoring
+[15janv.2026 18:32:08.603] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 6 callbacks and 0 client callbacks
+[15janv.2026 18:32:08.613] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 168 marks
+[15janv.2026 18:32:09.260] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 70 berries
+[15janv.2026 18:32:09.302] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 137 Pokémon interaction sets
+[15janv.2026 18:32:09.330] [Render thread/WARN] [net.minecraft.core.MappedRegistry/]: Not all defined tags for registry ResourceKey[minecraft:root / minecraft:item] are present in data pack: c:tools/brushes, c:tools/shears, cobblemon:mint_leaf
+[15janv.2026 18:32:12.261] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[15janv.2026 18:32:12.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[15janv.2026 18:32:15.436] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[15janv.2026 18:32:15.472] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 2%
+[15janv.2026 18:32:16.390] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 2%
+[15janv.2026 18:32:16.461] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 2%
+[15janv.2026 18:32:16.941] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 2%
+[15janv.2026 18:32:17.446] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 24%
+[15janv.2026 18:32:18.463] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 24%
+[15janv.2026 18:32:18.463] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 24%
+[15janv.2026 18:32:18.949] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 46%
+[15janv.2026 18:32:19.447] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 51%
+[15janv.2026 18:32:19.562] [Server thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Starting Forge permission node registry
+[15janv.2026 18:32:19.563] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[15janv.2026 18:32:19.565] [Server thread/WARN] [net.neoforged.neoforge.common.TagConventionLogWarning/]: 
+   Dev warning - Legacy Tags detected. Please migrate your 'forge' namespace tags to the 'c' namespace! See net.neoforged.neoforge.common.Tags.java for all tags.
+   NOTE: Many tags have been moved around or renamed. Some new ones were added so please review the new tags.
+    And make sure you follow tag conventions for new tags! The convention is `c` with nouns generally being plural and adjectives being singular.
+   You can disable this message in NeoForge's common config by setting `logLegacyTagWarnings` to "SILENCED" or see individual tags with "DEV_VERBOSE".
+
+[15janv.2026 18:32:19.565] [Server thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Optimizing spawn pools...
+[15janv.2026 18:32:19.569] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 4132 ms
+[15janv.2026 18:32:19.656] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[15janv.2026 18:32:19.656] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[15janv.2026 18:32:20.459] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:9f66b64c] logged in with entity id 27 at (-2.5, 118.0, 7.5)
+[15janv.2026 18:32:20.483] [Server thread/ERROR] [com.cobblemon.mod.common.Cobblemon/]: .old File cobblemonplayerdata for 380df991-f603-344c-a090-369bad2a924a is corrupt or missing. Data is lost
+[15janv.2026 18:32:20.490] [Server thread/ERROR] [com.cobblemon.mod.common.Cobblemon/]: .old File pokedex for 380df991-f603-344c-a090-369bad2a924a is corrupt or missing. Data is lost
+[15janv.2026 18:32:20.547] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[15janv.2026 18:32:20.865] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
+[15janv.2026 18:32:21.227] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[15janv.2026 18:32:21.307] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:32:21.322] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:32:21.322] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[15janv.2026 18:32:25.778] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[15janv.2026 18:32:25.795] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:32:25.800] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:32:25.800] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[15janv.2026 18:32:26.698] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [The World of Cobblemon!]
+[15janv.2026 18:32:26.759] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [The World of Cobblemon!]
+[15janv.2026 18:32:26.771] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 18 advancements
+[15janv.2026 18:32:34.709] [Server thread/WARN] [net.minecraft.world.level.entity.PersistentEntitySectionManager/]: Entity PokemonEntity['Bulbasaur'/392, l='ServerLevel[New World]', x=6.50, y=114.00, z=16.50, removed=DISCARDED] wasn't found in section SectionPos{x=0, y=7, z=1} (destroying due to DISCARDED)
+[15janv.2026 18:32:46.428] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[15janv.2026 18:32:46.459] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:32:46.472] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:32:46.472] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[15janv.2026 18:32:48.712] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Set own game mode to Creative Mode]
+[15janv.2026 18:32:48.716] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Set own game mode to Creative Mode
+[15janv.2026 18:32:54.270] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Researcher Recruit]
+[15janv.2026 18:32:54.274] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Researcher Recruit]
+[15janv.2026 18:32:54.290] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 26 advancements
+[15janv.2026 18:32:58.573] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Bulbasaur was given [Pokédex].
+[15janv.2026 18:33:00.120] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] You retrieved [Pokédex] from Bulbasaur.
+[15janv.2026 18:33:01.379] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[15janv.2026 18:33:01.399] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:33:01.410] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:33:01.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[15janv.2026 18:33:01.986] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[15janv.2026 18:33:01.986] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[15janv.2026 18:33:02.177] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[15janv.2026 18:33:02.186] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[15janv.2026 18:33:02.187] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[15janv.2026 18:33:02.187] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[15janv.2026 18:33:12.187] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:33:13.293] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:33:13.320] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[15janv.2026 18:33:13.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[15janv.2026 18:33:13.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[15janv.2026 18:33:13.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[15janv.2026 18:33:13.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[15janv.2026 18:33:15.964] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 2006 recipes
+[15janv.2026 18:33:16.036] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2118 advancements
+[15janv.2026 18:33:16.039] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 10 server scripts and 1 client scripts
+[15janv.2026 18:33:17.047] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 936 moves
+[15janv.2026 18:33:17.118] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 314 abilities
+[15janv.2026 18:33:17.122] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 48 entity behaviours
+[15janv.2026 18:33:17.361] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Finished additions
+[15janv.2026 18:33:17.796] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 1025 Pokémon species
+[15janv.2026 18:33:17.798] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 27 spawn detail presets.
+[15janv.2026 18:33:17.810] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Starting dummy Showdown battle to force it to pre-load data.
+[15janv.2026 18:33:18.328] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Imported 266 held item IDs from showdown
+[15janv.2026 18:33:18.330] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 15 fossils
+[15janv.2026 18:33:18.354] [Render thread/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:dex_entry_additions/README.md, ignoring
+[15janv.2026 18:33:18.356] [Render thread/ERROR] [net.minecraft.Util/]: Invalid path in pack: cobblemon:dex_additions/README.md, ignoring
+[15janv.2026 18:33:18.361] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 6 callbacks and 0 client callbacks
+[15janv.2026 18:33:18.366] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 168 marks
+[15janv.2026 18:33:18.862] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 70 berries
+[15janv.2026 18:33:18.880] [Render thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Loaded 137 Pokémon interaction sets
+[15janv.2026 18:33:18.888] [Render thread/WARN] [net.minecraft.core.MappedRegistry/]: Not all defined tags for registry ResourceKey[minecraft:root / minecraft:item] are present in data pack: c:tools/brushes, c:tools/shears, cobblemon:mint_leaf
+[15janv.2026 18:33:19.875] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[15janv.2026 18:33:19.875] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[15janv.2026 18:33:20.276] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[15janv.2026 18:33:20.494] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[15janv.2026 18:33:20.505] [Server thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Starting Forge permission node registry
+[15janv.2026 18:33:20.506] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[15janv.2026 18:33:20.506] [Server thread/WARN] [net.neoforged.neoforge.common.TagConventionLogWarning/]: 
+   Dev warning - Legacy Tags detected. Please migrate your 'forge' namespace tags to the 'c' namespace! See net.neoforged.neoforge.common.Tags.java for all tags.
+   NOTE: Many tags have been moved around or renamed. Some new ones were added so please review the new tags.
+    And make sure you follow tag conventions for new tags! The convention is `c` with nouns generally being plural and adjectives being singular.
+   You can disable this message in NeoForge's common config by setting `logLegacyTagWarnings` to "SILENCED" or see individual tags with "DEV_VERBOSE".
+
+[15janv.2026 18:33:20.506] [Server thread/INFO] [com.cobblemon.mod.common.Cobblemon/]: Optimizing spawn pools...
+[15janv.2026 18:33:20.513] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 216 ms
+[15janv.2026 18:33:20.661] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[15janv.2026 18:33:20.661] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[15janv.2026 18:33:20.883] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:ec067218] logged in with entity id 1015 at (3.170205181263497, 115.0, 21.78470497820184)
+[15janv.2026 18:33:20.913] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[15janv.2026 18:33:21.002] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 26 advancements
+[15janv.2026 18:33:29.280] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [The First of Many]
+[15janv.2026 18:33:29.283] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [The First of Many]
+[15janv.2026 18:33:29.316] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 40 advancements
+[15janv.2026 18:33:39.063] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [A New Friend!]
+[15janv.2026 18:33:39.070] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [A New Friend!]
+[15janv.2026 18:33:39.118] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 45 advancements
+[15janv.2026 18:33:49.661] [Server thread/WARN] [net.minecraft.world.level.entity.PersistentEntitySectionManager/]: Entity PokemonEntity['Bulbasaur'/1554, l='ServerLevel[New World]', x=10.49, y=113.00, z=24.43, removed=DISCARDED] wasn't found in section SectionPos{x=0, y=7, z=1} (destroying due to DISCARDED)
+[15janv.2026 18:33:59.505] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[15janv.2026 18:33:59.527] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:33:59.540] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:33:59.540] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[15janv.2026 18:40:56.956] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[15janv.2026 18:40:56.987] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:40:57.000] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:40:57.001] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[15janv.2026 18:43:15.949] [Server thread/WARN] [net.minecraft.world.level.entity.PersistentEntitySectionManager/]: Entity PokemonEntity['Bulbasaur'/3362, l='ServerLevel[New World]', x=6.19, y=122.00, z=58.50, removed=DISCARDED] wasn't found in section SectionPos{x=0, y=7, z=3} (destroying due to DISCARDED)
+[15janv.2026 18:43:30.162] [Server thread/WARN] [net.minecraft.world.level.entity.PersistentEntitySectionManager/]: Entity PokemonEntity['Lechonk'/1678, l='ServerLevel[New World]', x=-0.47, y=121.00, z=50.08, removed=DISCARDED] wasn't found in section SectionPos{x=-1, y=7, z=3} (destroying due to DISCARDED)
+[15janv.2026 18:43:30.983] [Server thread/WARN] [net.minecraft.world.level.entity.PersistentEntitySectionManager/]: Entity PokemonEntity['Bulbasaur'/3520, l='ServerLevel[New World]', x=2.58, y=121.00, z=72.62, removed=DISCARDED] wasn't found in section SectionPos{x=0, y=7, z=4} (destroying due to DISCARDED)
+[15janv.2026 18:43:48.616] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Hard Work and Dedication]
+[15janv.2026 18:43:48.640] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Hard Work and Dedication]
+[15janv.2026 18:43:48.672] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 45 advancements
+[15janv.2026 18:43:49.418] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Lechonk evolved into Oinkologne!
+[15janv.2026 18:45:25.856] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[15janv.2026 18:45:25.881] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[15janv.2026 18:45:25.916] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[15janv.2026 18:45:25.917] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
