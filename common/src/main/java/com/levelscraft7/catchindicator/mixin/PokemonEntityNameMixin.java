@@ -44,8 +44,7 @@ public abstract class PokemonEntityNameMixin {
 
     // Icon glyph mapped via assets/catchindicator/font/default.json
     @Unique
-    private static final Component CAUGHT_ICON = Component.literal("●");
-
+    private static final Component CAUGHT_ICON = Component.literal("● CATCH ●");
 
     @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
     private void catchindicator$decorateWildName(CallbackInfoReturnable<Component> cir) {
@@ -211,9 +210,8 @@ public abstract class PokemonEntityNameMixin {
             Object pokedexSource = resolvePokedexSource();
             if (pokedexSource == null) return DiscoveryStatus.UNKNOWN;
             // Voie officielle Cobblemon : ClientPokedexManager.getCaughtForms / getEncounteredForms
-            DiscoveryStatus direct = tryResolveFromClientPokedexManager(pokemon);
-            if (direct != null) return direct;
-
+            DiscoveryStatus clientStatus = catchindicator$tryResolveFromClientPokedexManager(pokemon);
+            if (clientStatus != null) return clientStatus;
 
             ResourceLocation speciesRL = safeSpeciesResourceLocation(pokemon);
             String formId = safeFormId(pokemon);
@@ -265,7 +263,6 @@ public abstract class PokemonEntityNameMixin {
                 }
                 if (seen0 instanceof Boolean b && b) return DiscoveryStatus.SEEN;
 
-                if (caught0 instanceof Boolean || seen0 instanceof Boolean) return DiscoveryStatus.UNKNOWN;
             }
 
 // Variante 0 bis: parfois l'API prend directement Pokemon
@@ -276,8 +273,6 @@ public abstract class PokemonEntityNameMixin {
             Object seenP = invokeFirstWithArgs(pokedexSource, new Object[]{ pokemon },
                     "hasSeen", "has_seen", "hasSeen$default");
             if (seenP instanceof Boolean b && b) return DiscoveryStatus.SEEN;
-
-            if (caughtP instanceof Boolean || seenP instanceof Boolean) return DiscoveryStatus.UNKNOWN;
 
             ResourceLocation[] rls = new ResourceLocation[]{ rlA, rlB };
             String[] forms = new String[]{ formA, formB, null };
@@ -307,9 +302,6 @@ public abstract class PokemonEntityNameMixin {
                     if (seen instanceof Boolean b && b) return DiscoveryStatus.SEEN;
                 }
             }
-
-            // Si au moins une des méthodes a répondu (false), on assume UNKNOWN
-            if (caught instanceof Boolean || seen instanceof Boolean) return DiscoveryStatus.UNKNOWN;
 
             // 2) Fallback: map based storage (internal structure may vary)
             Map<?, ?> discovered = resolveDiscoveredMap(pokedexSource);
@@ -350,33 +342,6 @@ public abstract class PokemonEntityNameMixin {
         } catch (Throwable t) {
             LOGGER.debug("Failed to resolve discovery status", t);
             return DiscoveryStatus.UNKNOWN;
-        }
-    }
-
-    private static DiscoveryStatus tryResolveFromClientPokedexManager(Pokemon pokemon) {
-        try {
-            Object cobblemonClient = resolveCobblemonClientSingleton();
-            if (cobblemonClient == null) return null;
-
-            Object clientPokedex = invokeFirst(cobblemonClient, "getClientPokedexData");
-            if (clientPokedex == null) return null;
-
-            Object entry = resolvePokedexEntry(pokemon);
-            if (entry == null) return null;
-
-            Object caughtFormsObj = invokeFirstWithArgs(clientPokedex, new Object[]{ entry }, "getCaughtForms");
-            if (caughtFormsObj instanceof java.util.List<?> caughtForms && !caughtForms.isEmpty()) {
-                return DiscoveryStatus.CAUGHT;
-            }
-
-            Object encounteredFormsObj = invokeFirstWithArgs(clientPokedex, new Object[]{ entry }, "getEncounteredForms");
-            if (encounteredFormsObj instanceof java.util.List<?> encounteredForms && !encounteredForms.isEmpty()) {
-                return DiscoveryStatus.SEEN;
-            }
-
-            return DiscoveryStatus.UNKNOWN;
-        } catch (Throwable ignored) {
-            return null;
         }
     }
 
@@ -692,4 +657,36 @@ public abstract class PokemonEntityNameMixin {
         }
         return null;
     }
+
+    @Unique
+    private static DiscoveryStatus catchindicator$tryResolveFromClientPokedexManager(Pokemon pokemon) {
+        try {
+            Object cobblemonClient = resolveCobblemonClientSingleton();
+            if (cobblemonClient == null) return null;
+
+            Object clientDex = invokeFirst(cobblemonClient, "getClientPokedexData");
+            if (clientDex == null) return null;
+
+            Object species = invokeFirst(pokemon, "getSpecies", "species");
+            if (species == null) return null;
+
+            Object entry = invokeFirst(species, "getPokedexEntry", "pokedexEntry");
+            if (entry == null) return null;
+
+            Object caughtFormsObj = invokeFirstWithArgs(clientDex, new Object[]{ entry }, "getCaughtForms");
+            if (caughtFormsObj instanceof java.util.Collection<?> c && !c.isEmpty()) {
+                return DiscoveryStatus.CAUGHT;
+            }
+
+            Object encounteredFormsObj = invokeFirstWithArgs(clientDex, new Object[]{ entry }, "getEncounteredForms");
+            if (encounteredFormsObj instanceof java.util.Collection<?> e && !e.isEmpty()) {
+                return DiscoveryStatus.SEEN;
+            }
+
+            return DiscoveryStatus.UNKNOWN;
+        } catch (Throwable ignored) {
+            return null;
+        }
+    }
+
 }
