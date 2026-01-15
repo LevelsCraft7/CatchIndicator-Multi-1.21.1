@@ -211,15 +211,23 @@ public abstract class PokemonEntityNameMixin {
             Object clientPokedexManager = resolveClientPokedexManager();
             if (clientPokedexManager == null) return DiscoveryStatus.UNKNOWN;
 
-            ResourceLocation speciesId = safeSpeciesResourceLocation(pokemon);
-            if (speciesId == null) return DiscoveryStatus.UNKNOWN;
+            Object species = invokeFirst(pokemon, "getSpecies", "species");
+            Object entry = null;
+            if (species != null) {
+                entry = invokeFirst(species, "getPokedexEntry", "pokedexEntry");
+            }
 
-            Object record = resolveSpeciesRecord(clientPokedexManager, speciesId);
+            ResourceLocation speciesId = safeSpeciesResourceLocation(pokemon);
+
+            Object record = resolveSpeciesRecord(clientPokedexManager, speciesId, species, entry);
             if (record == null) return DiscoveryStatus.UNKNOWN;
 
             Object progress = invokeFirst(record,
                     "getEntryProgress", "getProgress",
                     "entryProgress", "progress");
+            if (progress == null) {
+                progress = readFieldIfExists(record, "entryProgress", "progress");
+            }
             return mapEntryProgress(progress);
         } catch (Throwable t) {
             LOGGER.debug("Failed to resolve discovery status", t);
@@ -403,16 +411,60 @@ public abstract class PokemonEntityNameMixin {
     }
 
     @Unique
-    private static Object resolveSpeciesRecord(Object clientPokedexManager, ResourceLocation speciesId) {
-        if (clientPokedexManager == null || speciesId == null) return null;
+    private static Object resolveSpeciesRecord(Object clientPokedexManager, ResourceLocation speciesId, Object species, Object entry) {
+        if (clientPokedexManager == null) return null;
+
+        Object direct = resolveSpeciesRecordDirect(clientPokedexManager, speciesId, species, entry);
+        if (direct != null) return direct;
 
         Object recordsObj = invokeFirst(clientPokedexManager,
                 "getSpeciesRecords", "speciesRecords", "getRecords", "records");
         if (recordsObj instanceof Map<?, ?> records) {
-            Object record = records.get(speciesId);
-            if (record != null) return record;
-            return mapGetByStringKey(records, speciesId.toString());
+            Object record = null;
+            if (speciesId != null) {
+                record = records.get(speciesId);
+                if (record != null) return record;
+                record = mapGetByStringKey(records, speciesId.toString());
+                if (record != null) return record;
+            }
+
+            if (species != null) {
+                record = records.get(species);
+                if (record != null) return record;
+            }
+
+            if (entry != null) {
+                record = records.get(entry);
+                if (record != null) return record;
+            }
+
+            if (speciesId != null) {
+                return mapGetByStringKey(records, speciesId.toString());
+            }
         }
+        return null;
+    }
+
+    @Unique
+    private static Object resolveSpeciesRecordDirect(Object clientPokedexManager, ResourceLocation speciesId, Object species, Object entry) {
+        if (entry != null) {
+            Object record = invokeFirstWithArgs(clientPokedexManager, new Object[]{ entry },
+                    "getSpeciesRecord", "getRecord", "getSpeciesDexRecord");
+            if (record != null) return record;
+        }
+
+        if (species != null) {
+            Object record = invokeFirstWithArgs(clientPokedexManager, new Object[]{ species },
+                    "getSpeciesRecord", "getRecord", "getSpeciesDexRecord");
+            if (record != null) return record;
+        }
+
+        if (speciesId != null) {
+            Object record = invokeFirstWithArgs(clientPokedexManager, new Object[]{ speciesId },
+                    "getSpeciesRecord", "getRecord", "getSpeciesDexRecord");
+            if (record != null) return record;
+        }
+
         return null;
     }
 
