@@ -478,4 +478,28 @@ public abstract class PokemonEntityNameMixin {
         return DiscoveryStatus.UNKNOWN;
     }
 
+    @Unique
+    private static Object resolveSpeciesRecord(Object clientPokedexManager, ResourceLocation speciesId) {
+        if (clientPokedexManager == null || speciesId == null) return null;
+
+        Object recordsObj = invokeFirst(clientPokedexManager,
+                "getSpeciesRecords", "speciesRecords", "getRecords", "records");
+        if (recordsObj instanceof Map<?, ?> records) {
+            Object record = records.get(speciesId);
+            if (record != null) return record;
+            return mapGetByStringKey(records, speciesId.toString());
+        }
+        return null;
+    }
+
+    @Unique
+    private static DiscoveryStatus mapEntryProgress(Object progress) {
+        if (progress == null) return DiscoveryStatus.UNKNOWN;
+
+        String normalized = progress.toString().toUpperCase(Locale.ROOT);
+        if (normalized.contains("CAUGHT")) return DiscoveryStatus.CAUGHT;
+        if (normalized.contains("SEEN") || normalized.contains("ENCOUNTERED")) return DiscoveryStatus.SEEN;
+        return DiscoveryStatus.UNKNOWN;
+    }
+
 }
