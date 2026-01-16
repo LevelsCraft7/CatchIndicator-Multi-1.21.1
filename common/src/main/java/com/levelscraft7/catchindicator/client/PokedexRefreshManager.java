@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class PokedexRefreshManager {
+
     private static final Logger LOGGER = LoggerFactory.getLogger("catchindicator");
     private static final String POKEMON_ENTITY_CLASS = "com.cobblemon.mod.common.entity.pokemon.PokemonEntity";
     private static final Set<String> CAUGHT_SPECIES = new HashSet<>();
@@ -43,7 +44,7 @@ public final class PokedexRefreshManager {
     }
 
     public static void onPokedexSync(Object clientPokedexManager) {
-        LOGGER.debug("pokedex sync received");
+        LOGGER.warn("pokedex sync received");
 
         if (clientPokedexManager == null) return;
 
@@ -75,15 +76,19 @@ public final class PokedexRefreshManager {
 
     private static void scheduleRefresh() {
         if (!NEEDS_REFRESH.compareAndSet(false, true)) return;
+
         Minecraft mc = Minecraft.getInstance();
-        if (mc == null) {
-            NEEDS_REFRESH.set(false);
-            return;
-        }
-        mc.execute(PokedexRefreshManager::refreshWorldNametags);
+        if (mc == null) return;
+
+        // décale le refresh d'un tick client
+        mc.execute(() -> {
+            // encore un tick plus tard pour être sûr
+            mc.execute(PokedexRefreshManager::refreshWorldNametags);
+        });
     }
 
     private static void refreshWorldNametags() {
+        LOGGER.warn("FORCED REFRESH THIS TICK");
         if (!NEEDS_REFRESH.compareAndSet(true, false)) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc == null || mc.level == null) return;
@@ -98,7 +103,7 @@ public final class PokedexRefreshManager {
             entity.setCustomNameVisible(visible);
             count++;
         }
-        LOGGER.debug("refresh executed: {} entities", count);
+        LOGGER.warn("refresh executed: {} entities", count);
     }
 
     /**
