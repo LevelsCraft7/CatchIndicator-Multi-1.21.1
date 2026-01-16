@@ -112,10 +112,16 @@ public abstract class PokemonEntityNameMixin {
 
         // Absolute rule: species already caught => icon everywhere (including wild)
         if (com.levelscraft7.catchindicator.client.PokedexRefreshManager.isSpeciesCaught(speciesId)) {
-            MutableComponent out = cir.getReturnValue().copy();
-            out.append(Component.literal(" ")).append(CAUGHT_ICON);
+            Component original = cir.getReturnValue();
+
+            MutableComponent out = Component.empty()
+                    .append(CAUGHT_ICON)
+                    .append(Component.literal(" "))
+                    .append(original);
+
             cir.setReturnValue(out);
             return;
+
         }
 
         // Fallback for never caught species: keep your existing behavior
@@ -129,18 +135,19 @@ public abstract class PokemonEntityNameMixin {
         if (wild && status == DiscoveryStatus.UNKNOWN) return;
 
         if (status == DiscoveryStatus.CAUGHT) {
-            MutableComponent out = original.copy();
-            out.append(Component.literal(" ")).append(CAUGHT_ICON);
+            MutableComponent out = Component.empty()
+                    .append(CAUGHT_ICON)
+                    .append(Component.literal(" "))
+                    .append(original);
+
             cir.setReturnValue(out);
+
         } else if (status == DiscoveryStatus.SEEN) {
             // keep as is
         } else {
             cir.setReturnValue(Component.literal("???"));
         }
     }
-
-
-
 
     @Unique
     private static Pokemon getPokemonFromEntity(Object pokemonEntity) {

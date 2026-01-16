@@ -3,8 +3,8 @@
     {
       "type": "bitmap",
       "file": "catchindicator:font/caught.png",
-      "height": 14,
-      "ascent": 10,
+      "height": 11,
+      "ascent": 9,
       "chars": [
         "\ua000"
       ]
