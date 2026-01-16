@@ -3,11 +3,14 @@
   "package": "com.levelscraft7.catchindicator.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "ClientPokedexManagerMixin",
     "PokemonEntityNameMixin",
-    "EntityDisplayNameMixin"
+    "EntityDisplayNameMixin",
+    "ClientPokedexIncrementalMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "ClientPokedexIncrementalMixin"
+  ]
 }
