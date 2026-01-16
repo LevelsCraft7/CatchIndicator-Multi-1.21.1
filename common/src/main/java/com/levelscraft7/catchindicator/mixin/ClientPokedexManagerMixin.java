@@ -17,9 +17,39 @@ public class ClientPokedexManagerMixin {
         PokedexRefreshManager.onPokedexSync(this);
     }
 
+    @Inject(method = "setSpeciesRecord", at = @At("TAIL"), remap = false, require = 0)
+    private void catchindicator$onSetSpeciesRecord(Object key, Object record, CallbackInfo ci) {
+        PokedexRefreshManager.onRecordUpdate(this, key, record);
+    }
+
+    @Inject(method = "setRecord", at = @At("TAIL"), remap = false, require = 0)
+    private void catchindicator$onSetRecord(Object key, Object record, CallbackInfo ci) {
+        PokedexRefreshManager.onRecordUpdate(this, key, record);
+    }
+
     @Inject(method = "setRecords(Ljava/util/Map;)V", at = @At("TAIL"), remap = false, require = 0)
     private void catchindicator$onSetRecords(Map<?, ?> records, CallbackInfo ci) {
         PokedexRefreshManager.onPokedexSync(this);
+    }
+
+    @Inject(method = "updateSpeciesRecord", at = @At("TAIL"), remap = false, require = 0)
+    private void catchindicator$onUpdateSpeciesRecord(Object key, Object record, CallbackInfo ci) {
+        PokedexRefreshManager.onRecordUpdate(this, key, record);
+    }
+
+    @Inject(method = "updateRecord", at = @At("TAIL"), remap = false, require = 0)
+    private void catchindicator$onUpdateRecord(Object key, Object record, CallbackInfo ci) {
+        PokedexRefreshManager.onRecordUpdate(this, key, record);
+    }
+
+    @Inject(method = "setCaughtForms", at = @At("TAIL"), remap = false, require = 0)
+    private void catchindicator$onSetCaughtForms(Object key, Object record, CallbackInfo ci) {
+        PokedexRefreshManager.onRecordUpdate(this, key, record);
+    }
+
+    @Inject(method = "addCaughtForm", at = @At("TAIL"), remap = false, require = 0)
+    private void catchindicator$onAddCaughtForm(Object key, Object form, CallbackInfo ci) {
+        PokedexRefreshManager.onRecordUpdate(this, key, null);
     }
 
     @Inject(method = "sync()V", at = @At("TAIL"), remap = false, require = 0)

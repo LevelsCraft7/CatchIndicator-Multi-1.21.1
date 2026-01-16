@@ -50,30 +50,19 @@ public final class PokedexRefreshManager {
         boolean changed = false;
 
         for (Map.Entry<?, ?> entry : records.entrySet()) {
-            Object key = entry.getKey();
-            Object record = entry.getValue();
-            if (key == null || record == null) continue;
-
-            Object caughtForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ key }, "getCaughtForms");
-            if (!(caughtForms instanceof java.util.Collection<?> c) || c.isEmpty()) {
-                caughtForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ record }, "getCaughtForms");
-            }
-
-            if (caughtForms instanceof java.util.Collection<?> c2 && !c2.isEmpty()) {
-                if (markSpeciesCaught(key.toString())) {
-                    LOGGER.debug("caught status changed for {}", key);
-                    changed = true;
-                }
-
-                Object speciesId = invokeFirst(record,
-                        "getSpeciesId", "speciesId", "getId", "id", "getShowdownId", "showdownId");
-                if (speciesId != null) {
-                    markSpeciesCaught(speciesId.toString());
-                }
+            if (updateCaughtFromRecord(clientPokedexManager, entry.getKey(), entry.getValue())) {
+                changed = true;
             }
         }
 
         if (changed) {
+            scheduleRefresh();
+        }
+    }
+
+    public static void onRecordUpdate(Object clientPokedexManager, Object key, Object record) {
+        if (clientPokedexManager == null) return;
+        if (updateCaughtFromRecord(clientPokedexManager, key, record)) {
             scheduleRefresh();
         }
     }
@@ -104,6 +93,39 @@ public final class PokedexRefreshManager {
             count++;
         }
         LOGGER.debug("refresh executed: {} entities", count);
+    }
+
+    private static boolean updateCaughtFromRecord(Object clientPokedexManager, Object key, Object record) {
+        if (clientPokedexManager == null) return false;
+        if (key == null && record == null) return false;
+
+        Object caughtForms = null;
+        if (key != null) {
+            caughtForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ key }, "getCaughtForms");
+        }
+        if (!(caughtForms instanceof java.util.Collection<?> c) || c.isEmpty()) {
+            if (record != null) {
+                caughtForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ record }, "getCaughtForms");
+            }
+        }
+
+        if (caughtForms instanceof java.util.Collection<?> c2 && !c2.isEmpty()) {
+            boolean changed = false;
+            if (key != null && markSpeciesCaught(key.toString())) {
+                LOGGER.debug("caught status changed for {}", key);
+                changed = true;
+            }
+
+            Object speciesId = record != null ? invokeFirst(record,
+                    "getSpeciesId", "speciesId", "getId", "id", "getShowdownId", "showdownId") : null;
+            if (speciesId != null && markSpeciesCaught(speciesId.toString())) {
+                LOGGER.debug("caught status changed for {}", speciesId);
+                changed = true;
+            }
+            return changed;
+        }
+
+        return false;
     }
 
     private static Set<String> normalizeIds(String raw) {
