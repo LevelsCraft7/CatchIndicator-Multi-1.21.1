@@ -120,11 +120,13 @@ public abstract class PokemonEntityNameMixin {
 
         // If we ever see an owned Pokemon of this species, mark the species as caught for this session
         if (!wild) {
-            CATCHED_SPECIES.add(speciesId);
+            addSpeciesToCaughtCache(speciesId);
         }
 
         // Absolute rule: species already caught => icon everywhere (including wild)
-        if (CATCHED_SPECIES.contains(speciesId)) {
+        if (CATCHED_SPECIES.contains(speciesId)
+                || CATCHED_SPECIES.contains("cobblemon:" + speciesId)
+        ) {
             MutableComponent out = cir.getReturnValue().copy();
             out.append(Component.literal(" ")).append(CAUGHT_ICON);
             cir.setReturnValue(out);
@@ -133,6 +135,10 @@ public abstract class PokemonEntityNameMixin {
 
         // Fallback for never caught species: keep your existing behavior
         DiscoveryStatus status = getDiscoveryStatus(pokemon);
+        if (status == DiscoveryStatus.CAUGHT) {
+            addSpeciesToCaughtCache(speciesId);
+        }
+
         Component original = cir.getReturnValue();
 
         if (wild && status == DiscoveryStatus.UNKNOWN) return;
@@ -246,9 +252,28 @@ public abstract class PokemonEntityNameMixin {
             }
 
             ResourceLocation speciesId = safeSpeciesResourceLocation(pokemon);
+            String showdownId = safeSpeciesId(pokemon);
 
-            // 0) Voie la plus fiable: listes de formes capturées et rencontrées
-            Object[] keys = new Object[]{ entry, species, speciesId };
+            String rlString = null;
+            String rlPath = null;
+            if (speciesId != null) {
+                rlString = speciesId.toString();
+                rlPath = speciesId.getPath();
+            }
+
+// 0) Voie la plus fiable: listes de formes capturées et rencontrées
+// On ajoute des clés "String" car selon les versions Cobblemon,
+// getCaughtForms accepte parfois String et pas l'objet Species ou ResourceLocation.
+            Object[] keys = new Object[]{
+                    entry,
+                    species,
+                    speciesId,
+                    rlString,
+                    rlPath,
+                    showdownId,
+                    (showdownId != null && !showdownId.isBlank()) ? ("cobblemon:" + showdownId) : null
+            };
+
 
 // CAUGHT si au moins une forme est capturée
             for (Object k : keys) {
@@ -572,15 +597,21 @@ public abstract class PokemonEntityNameMixin {
                 Object record = e.getValue();
                 if (key == null || record == null) continue;
 
-                Object progress = invokeFirst(record, "getEntryProgress", "getProgress", "entryProgress", "progress");
-                if (progress == null) progress = readFieldIfExists(record, "entryProgress", "progress");
+// CAUGHT si au moins une forme est capturée, c’est la voie la plus stable entre versions
+                Object caughtForms = invokeFirstWithArgs(manager, new Object[]{ key }, "getCaughtForms");
+                if (!(caughtForms instanceof java.util.Collection<?> c) || c.isEmpty()) {
+                    // Certains records ne prennent pas la clé, on tente avec la value record
+                    caughtForms = invokeFirstWithArgs(manager, new Object[]{ record }, "getCaughtForms");
+                }
 
-                if (catchindicator$mapEntryProgress(progress) == DiscoveryStatus.CAUGHT) {
+                if (caughtForms instanceof java.util.Collection<?> c2 && !c2.isEmpty()) {
                     addSpeciesToCaughtCache(key.toString());
 
-                    Object speciesId = invokeFirst(record, "getSpeciesId", "speciesId", "getId", "id", "getShowdownId", "showdownId");
+                    Object speciesId = invokeFirst(record,
+                            "getSpeciesId", "speciesId", "getId", "id", "getShowdownId", "showdownId");
                     if (speciesId != null) addSpeciesToCaughtCache(speciesId.toString());
                 }
+
             }
 
             int after = CATCHED_SPECIES.size();
