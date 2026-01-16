@@ -35,6 +35,16 @@ import java.util.Map;
 public abstract class PokemonEntityNameMixin {
     private static final Logger LOGGER = LoggerFactory.getLogger("catchindicator");
 
+    @Unique
+    private static long CATCH_CACHE_LAST_REFRESH_MS = 0L;
+
+    @Unique
+    private static final long CATCH_CACHE_REFRESH_COOLDOWN_MS = 2000L;
+
+    @Unique
+    private static int CATCH_CACHE_LAST_SIZE_LOGGED = 0;
+
+
     // Known (historical) client singletons. We try several to survive refactors.
     private static final String[] COBBLEMON_CLIENT_SINGLETONS = new String[] {
             "com.cobblemon.mod.common.client.Client",
@@ -47,39 +57,46 @@ public abstract class PokemonEntityNameMixin {
     @Unique
     private static final Component CAUGHT_ICON = Component.literal("● CATCH ●");
 
+    @org.spongepowered.asm.mixin.Unique
+    private static final java.util.Set<String> CATCHED_SPECIES = new java.util.HashSet<>();
+
     @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
     private void catchindicator$decorateWildName(CallbackInfoReturnable<Component> cir) {
-        // Hard client guard: this mixin is in the "client" section, but keep it safe anyway.
         if (Minecraft.getInstance() == null || Minecraft.getInstance().player == null) return;
-        LOGGER.debug("CatchIndicator getName mixin fired");
+
+        warmCaughtCacheFromPokedexIfNeeded();
 
         Pokemon pokemon = getPokemonFromEntity(this);
         if (pokemon == null) return;
 
+        // Species id must be stable and non empty
+        String speciesId = safeSpeciesId(pokemon);
+        if (speciesId == null || speciesId.isBlank()) {
+            // fallback: try species resource location string
+            try {
+                Object rl = safeSpeciesResourceLocation(pokemon);
+                if (rl != null) speciesId = rl.toString();
+            } catch (Throwable ignored) {
+            }
+        }
+        if (speciesId == null || speciesId.isBlank()) return;
+
         boolean wild = isWild(pokemon);
 
-// Fallback 1: owner peut être porté par l'entity en 1.21.x
+        // Fallback 1: owner can be stored on the entity
         if (wild) {
             Object entityOwner = invokeFirst(this,
                     "getOwnerUUID", "getOwnerUuid", "getOwnerId", "getOwner",
                     "getOriginalTrainerUUID", "getOriginalTrainer");
-
             if (entityOwner != null) {
                 String s = entityOwner.toString();
                 if (s != null && !s.isBlank() && !s.equalsIgnoreCase("NONE") && !s.equalsIgnoreCase("null")) {
-                    // Si ça ressemble à un UUID, on considère "owned"
-                    try {
-                        java.util.UUID.fromString(s);
-                        wild = false;
-                    } catch (Throwable ignored) {
-                        // Même si ce n'est pas un UUID, une valeur non vide est déjà un bon signal "owned"
-                        wild = false;
-                    }
+                    wild = false;
                 }
             }
         }
 
-// Fallback 2: scan des fields de l'entity pour repérer un UUID ou un Optional-like
+        // Fallback 2: scan fields on the entity for UUID or Optional like wrapper
         if (wild) {
             try {
                 for (java.lang.reflect.Field f : this.getClass().getDeclaredFields()) {
@@ -101,29 +118,40 @@ public abstract class PokemonEntityNameMixin {
             }
         }
 
+        // If we ever see an owned Pokemon of this species, mark the species as caught for this session
+        if (!wild) {
+            CATCHED_SPECIES.add(speciesId);
+        }
+
+        // Absolute rule: species already caught => icon everywhere (including wild)
+        if (CATCHED_SPECIES.contains(speciesId)) {
+            MutableComponent out = cir.getReturnValue().copy();
+            out.append(Component.literal(" ")).append(CAUGHT_ICON);
+            cir.setReturnValue(out);
+            return;
+        }
+
+        // Fallback for never caught species: keep your existing behavior
         DiscoveryStatus status = getDiscoveryStatus(pokemon);
         Component original = cir.getReturnValue();
 
-        // Si ce n'est pas sauvage, on le traite comme capturé
-        if (!wild) status = DiscoveryStatus.CAUGHT;
-
-        // Garde fou uniquement pour les sauvages
         if (wild && status == DiscoveryStatus.UNKNOWN) return;
 
         if (status == DiscoveryStatus.CAUGHT) {
             MutableComponent out = original.copy();
             out.append(Component.literal(" ")).append(CAUGHT_ICON);
             cir.setReturnValue(out);
-
         } else if (status == DiscoveryStatus.SEEN) {
-            // keep as-is
+            // keep as is
         } else {
-            // Ici status ne peut plus être UNKNOWN pour les sauvages, donc ??? = vraiment "jamais vu"
             cir.setReturnValue(Component.literal("???"));
         }
     }
 
 
+
+
+    @Unique
     private static Pokemon getPokemonFromEntity(Object pokemonEntity) {
         // Prefer direct method name used by Cobblemon
         Object res = invokeFirst(pokemonEntity,
@@ -201,7 +229,7 @@ public abstract class PokemonEntityNameMixin {
             }
         } catch (Throwable ignored) {
         }
-                // Default conservative
+        // Default conservative
         return true;
     }
 
@@ -218,6 +246,30 @@ public abstract class PokemonEntityNameMixin {
             }
 
             ResourceLocation speciesId = safeSpeciesResourceLocation(pokemon);
+
+            // 0) Voie la plus fiable: listes de formes capturées et rencontrées
+            Object[] keys = new Object[]{ entry, species, speciesId };
+
+// CAUGHT si au moins une forme est capturée
+            for (Object k : keys) {
+                if (k == null) continue;
+
+                Object caughtForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ k }, "getCaughtForms");
+                if (caughtForms instanceof java.util.Collection<?> c && !c.isEmpty()) {
+                    return DiscoveryStatus.CAUGHT;
+                }
+            }
+
+// SEEN si au moins une forme est rencontrée
+            for (Object k : keys) {
+                if (k == null) continue;
+
+                Object seenForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ k }, "getEncounteredForms", "getSeenForms");
+                if (seenForms instanceof java.util.Collection<?> c && !c.isEmpty()) {
+                    return DiscoveryStatus.SEEN;
+                }
+            }
+
 
             Object record = resolveSpeciesRecord(clientPokedexManager, speciesId, species, entry);
             if (record == null) return DiscoveryStatus.UNKNOWN;
@@ -476,6 +528,71 @@ public abstract class PokemonEntityNameMixin {
         if (normalized.contains("CAUGHT")) return DiscoveryStatus.CAUGHT;
         if (normalized.contains("SEEN") || normalized.contains("ENCOUNTERED")) return DiscoveryStatus.SEEN;
         return DiscoveryStatus.UNKNOWN;
+    }
+
+    @Unique
+    private static void addSpeciesToCaughtCache(String anyId) {
+        if (anyId == null) return;
+        String s = anyId.trim();
+        if (s.isEmpty()) return;
+
+        CATCHED_SPECIES.add(s);
+
+        try {
+            String ns = s;
+            if (!ns.contains(":")) ns = "cobblemon:" + ns;
+            ResourceLocation rl = ResourceLocation.parse(ns);
+            CATCHED_SPECIES.add(rl.toString());
+            CATCHED_SPECIES.add(rl.getPath());
+        } catch (Throwable ignored) {
+        }
+    }
+
+    @Unique
+    private static void warmCaughtCacheFromPokedexIfNeeded() {
+        try {
+            long now = System.currentTimeMillis();
+            if (now - CATCH_CACHE_LAST_REFRESH_MS < CATCH_CACHE_REFRESH_COOLDOWN_MS) return;
+            CATCH_CACHE_LAST_REFRESH_MS = now;
+
+            Object manager = resolveClientPokedexManager();
+            if (manager == null) return;
+
+            Object recordsObj = invokeFirst(manager, "getSpeciesRecords", "speciesRecords", "getRecords", "records");
+            if (recordsObj == null) {
+                recordsObj = readFieldIfExists(manager, "speciesRecords", "records");
+            }
+
+            if (!(recordsObj instanceof Map<?, ?> records) || records.isEmpty()) return;
+
+            int before = CATCHED_SPECIES.size();
+
+            for (Map.Entry<?, ?> e : records.entrySet()) {
+                Object key = e.getKey();
+                Object record = e.getValue();
+                if (key == null || record == null) continue;
+
+                Object progress = invokeFirst(record, "getEntryProgress", "getProgress", "entryProgress", "progress");
+                if (progress == null) progress = readFieldIfExists(record, "entryProgress", "progress");
+
+                if (catchindicator$mapEntryProgress(progress) == DiscoveryStatus.CAUGHT) {
+                    addSpeciesToCaughtCache(key.toString());
+
+                    Object speciesId = invokeFirst(record, "getSpeciesId", "speciesId", "getId", "id", "getShowdownId", "showdownId");
+                    if (speciesId != null) addSpeciesToCaughtCache(speciesId.toString());
+                }
+            }
+
+            int after = CATCHED_SPECIES.size();
+            if (after != CATCH_CACHE_LAST_SIZE_LOGGED) {
+                CATCH_CACHE_LAST_SIZE_LOGGED = after;
+                if (after > before) {
+                    LOGGER.debug("Catch cache warmup: +{} (now {})", (after - before), after);
+                }
+            }
+        } catch (Throwable t) {
+            LOGGER.debug("Caught cache warmup failed", t);
+        }
     }
 
 }
