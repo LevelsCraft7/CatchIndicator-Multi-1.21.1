@@ -36,6 +36,9 @@ public abstract class PokemonEntityNameMixin {
     private static final Logger LOGGER = LoggerFactory.getLogger("catchindicator");
 
     @Unique
+    private static boolean NEEDS_WORLD_NAMETAG_REFRESH = false;
+
+    @Unique
     private static long CATCH_CACHE_LAST_REFRESH_MS = 0L;
 
     @Unique
@@ -65,6 +68,11 @@ public abstract class PokemonEntityNameMixin {
         if (Minecraft.getInstance() == null || Minecraft.getInstance().player == null) return;
 
         warmCaughtCacheFromPokedexIfNeeded();
+
+        if (NEEDS_WORLD_NAMETAG_REFRESH) {
+            NEEDS_WORLD_NAMETAG_REFRESH = false;
+            forceRefreshAllPokemonNametags();
+        }
 
         Pokemon pokemon = getPokemonFromEntity(this);
         if (pokemon == null) return;
@@ -558,20 +566,39 @@ public abstract class PokemonEntityNameMixin {
     @Unique
     private static void addSpeciesToCaughtCache(String anyId) {
         if (anyId == null) return;
+
         String s = anyId.trim();
         if (s.isEmpty()) return;
 
-        CATCHED_SPECIES.add(s);
+        boolean changed = false;
 
+        // Ajout brut
+        if (CATCHED_SPECIES.add(s)) {
+            changed = true;
+        }
+
+        // Ajouts normalisés
         try {
             String ns = s;
             if (!ns.contains(":")) ns = "cobblemon:" + ns;
+
             ResourceLocation rl = ResourceLocation.parse(ns);
-            CATCHED_SPECIES.add(rl.toString());
-            CATCHED_SPECIES.add(rl.getPath());
+
+            if (CATCHED_SPECIES.add(rl.toString())) {
+                changed = true;
+            }
+            if (CATCHED_SPECIES.add(rl.getPath())) {
+                changed = true;
+            }
         } catch (Throwable ignored) {
         }
+
+        // On ne déclenche un refresh world que si on a vraiment ajouté quelque chose de nouveau
+        if (changed) {
+            NEEDS_WORLD_NAMETAG_REFRESH = true;
+        }
     }
+
 
     @Unique
     private static void warmCaughtCacheFromPokedexIfNeeded() {
@@ -623,6 +650,25 @@ public abstract class PokemonEntityNameMixin {
             }
         } catch (Throwable t) {
             LOGGER.debug("Caught cache warmup failed", t);
+        }
+    }
+
+    @Unique
+    private static void forceRefreshAllPokemonNametags() {
+        try {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc == null || mc.level == null) return;
+
+            // Force un refresh léger : toggle name visible pour invalider le cache de rendu
+            for (var e : mc.level.entitiesForRendering()) {
+                if (e == null) continue;
+                if (!e.getClass().getName().equals("com.cobblemon.mod.common.entity.pokemon.PokemonEntity")) continue;
+
+                boolean vis = e.isCustomNameVisible();
+                e.setCustomNameVisible(!vis);
+                e.setCustomNameVisible(vis);
+            }
+        } catch (Throwable ignored) {
         }
     }
 
