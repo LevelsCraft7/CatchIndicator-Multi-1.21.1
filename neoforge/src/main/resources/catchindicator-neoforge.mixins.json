@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.levelscraft7.catchindicator.neoforge.mixin",
+  "refmap": "catchindicator.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "CobblemonClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

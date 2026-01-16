@@ -50,7 +50,7 @@ public final class PokedexRefreshManager {
         boolean changed = false;
 
         for (Map.Entry<?, ?> entry : records.entrySet()) {
-            if (updateCaughtFromRecord(clientPokedexManager, entry.getKey(), entry.getValue())) {
+            if (updateCaughtFromRecord(entry.getKey(), entry.getValue())) {
                 changed = true;
             }
         }
@@ -62,7 +62,7 @@ public final class PokedexRefreshManager {
 
     public static void onRecordUpdate(Object clientPokedexManager, Object key, Object record) {
         if (clientPokedexManager == null) return;
-        if (updateCaughtFromRecord(clientPokedexManager, key, record)) {
+        if (updateCaughtFromRecord(key, record)) {
             scheduleRefresh();
         }
     }
@@ -95,37 +95,72 @@ public final class PokedexRefreshManager {
         LOGGER.debug("refresh executed: {} entities", count);
     }
 
-    private static boolean updateCaughtFromRecord(Object clientPokedexManager, Object key, Object record) {
-        if (clientPokedexManager == null) return false;
+    /**
+     * Cobblemon 1.7 moved client Pokédex to instanced player data.
+     * We treat a species as CAUGHT if either the species record or any form record has knowledge == CAUGHT.
+     */
+    private static boolean updateCaughtFromRecord(Object key, Object record) {
         if (key == null && record == null) return false;
+        if (record == null) return false;
 
-        Object caughtForms = null;
-        if (key != null) {
-            caughtForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ key }, "getCaughtForms");
-        }
-        if (!(caughtForms instanceof java.util.Collection<?> c) || c.isEmpty()) {
-            if (record != null) {
-                caughtForms = invokeFirstWithArgs(clientPokedexManager, new Object[]{ record }, "getCaughtForms");
-            }
-        }
+        if (!isRecordCaught(record)) return false;
 
-        if (caughtForms instanceof java.util.Collection<?> c2 && !c2.isEmpty()) {
-            boolean changed = false;
-            if (key != null && markSpeciesCaught(key.toString())) {
-                LOGGER.debug("caught status changed for {}", key);
-                changed = true;
-            }
-
-            Object speciesId = record != null ? invokeFirst(record,
-                    "getSpeciesId", "speciesId", "getId", "id", "getShowdownId", "showdownId") : null;
-            if (speciesId != null && markSpeciesCaught(speciesId.toString())) {
-                LOGGER.debug("caught status changed for {}", speciesId);
-                changed = true;
-            }
-            return changed;
+        boolean changed = false;
+        if (key != null && markSpeciesCaught(key.toString())) {
+            LOGGER.debug("caught status changed for {}", key);
+            changed = true;
         }
 
+        Object speciesId = invokeFirst(record, "getId", "id", "getSpeciesId", "speciesId");
+        if (speciesId != null && markSpeciesCaught(speciesId.toString())) {
+            LOGGER.debug("caught status changed for {}", speciesId);
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private static boolean isRecordCaught(Object speciesDexRecord) {
+        if (speciesDexRecord == null) return false;
+
+        // Fast path: SpeciesDexRecord.getKnowledge() == CAUGHT
+        Object knowledge = invokeFirst(speciesDexRecord, "getKnowledge", "getEntryProgress", "getProgress", "knowledge");
+        if (isProgressCaught(knowledge)) return true;
+
+        // Fallback: hasAtLeast(CAUGHT)
+        Object caughtEnum = resolvePokedexProgressCaught();
+        if (caughtEnum != null) {
+            Object hasAtLeast = invokeFirstWithArgs(speciesDexRecord, new Object[]{ caughtEnum }, "hasAtLeast");
+            if (hasAtLeast instanceof Boolean b && b) return true;
+        }
+
+        // Deep fallback: scan formRecords map values and check each FormDexRecord.getKnowledge()
+        Object formRecordsObj = readFieldIfExists(speciesDexRecord, "formRecords");
+        if (formRecordsObj instanceof Map<?, ?> map && !map.isEmpty()) {
+            for (Object v : map.values()) {
+                if (v == null) continue;
+                Object fk = invokeFirst(v, "getKnowledge", "knowledge");
+                if (isProgressCaught(fk)) return true;
+            }
+        }
         return false;
+    }
+
+    private static boolean isProgressCaught(Object progress) {
+        if (progress == null) return false;
+        String s = progress.toString();
+        return s != null && s.equalsIgnoreCase("CAUGHT");
+    }
+
+    private static Object resolvePokedexProgressCaught() {
+        try {
+            Class<?> c = Class.forName("com.cobblemon.mod.common.api.pokedex.PokedexEntryProgress");
+            Field f = c.getDeclaredField("CAUGHT");
+            f.setAccessible(true);
+            return f.get(null);
+        } catch (Throwable ignored) {
+            return null;
+        }
     }
 
     private static Set<String> normalizeIds(String raw) {

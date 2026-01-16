@@ -83,7 +83,7 @@ public abstract class PokemonEntityNameMixin {
         // Fallback 2: scan fields on the entity for UUID or Optional like wrapper
         if (wild) {
             try {
-                for (java.lang.reflect.Field f : this.getClass().getDeclaredFields()) {
+                for (Field f : this.getClass().getDeclaredFields()) {
                     f.setAccessible(true);
                     Object v = f.get(this);
 

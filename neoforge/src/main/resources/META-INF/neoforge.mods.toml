@@ -15,3 +15,6 @@ Shows a small indicator next to wild Pokémon names based on your Pokédex statu
 
 [[mixins]]
 config="catchindicator-common.mixins.json"
+
+[[mixins]]
+config="catchindicator-neoforge.mixins.json"

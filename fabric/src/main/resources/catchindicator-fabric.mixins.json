@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.levelscraft7.catchindicator.fabric.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "CobblemonClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
