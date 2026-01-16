@@ -2,7 +2,6 @@ package com.levelscraft7.catchindicator.mixin;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.levelscraft7.catchindicator.client.DiscoveryStatus;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +17,6 @@ import org.spongepowered.asm.mixin.Unique;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Client-side: modifies ONLY the in-world Pokémon entity name, not the Pokémon model name everywhere.
@@ -35,18 +33,6 @@ import java.util.Map;
 public abstract class PokemonEntityNameMixin {
     private static final Logger LOGGER = LoggerFactory.getLogger("catchindicator");
 
-    @Unique
-    private static boolean NEEDS_WORLD_NAMETAG_REFRESH = false;
-
-    @Unique
-    private static long CATCH_CACHE_LAST_REFRESH_MS = 0L;
-
-    @Unique
-    private static final long CATCH_CACHE_REFRESH_COOLDOWN_MS = 2000L;
-
-    @Unique
-    private static int CATCH_CACHE_LAST_SIZE_LOGGED = 0;
-
 
     // Known (historical) client singletons. We try several to survive refactors.
     private static final String[] COBBLEMON_CLIENT_SINGLETONS = new String[] {
@@ -60,20 +46,9 @@ public abstract class PokemonEntityNameMixin {
     @Unique
     private static final Component CAUGHT_ICON = Component.literal("● CATCH ●");
 
-    @org.spongepowered.asm.mixin.Unique
-    private static final java.util.Set<String> CATCHED_SPECIES = new java.util.HashSet<>();
 
     @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
     private void catchindicator$decorateWildName(CallbackInfoReturnable<Component> cir) {
-        if (Minecraft.getInstance() == null || Minecraft.getInstance().player == null) return;
-
-        warmCaughtCacheFromPokedexIfNeeded();
-
-        if (NEEDS_WORLD_NAMETAG_REFRESH) {
-            NEEDS_WORLD_NAMETAG_REFRESH = false;
-            forceRefreshAllPokemonNametags();
-        }
-
         Pokemon pokemon = getPokemonFromEntity(this);
         if (pokemon == null) return;
 
@@ -128,13 +103,11 @@ public abstract class PokemonEntityNameMixin {
 
         // If we ever see an owned Pokemon of this species, mark the species as caught for this session
         if (!wild) {
-            addSpeciesToCaughtCache(speciesId);
+            com.levelscraft7.catchindicator.client.PokedexRefreshManager.markSpeciesCaught(speciesId);
         }
 
         // Absolute rule: species already caught => icon everywhere (including wild)
-        if (CATCHED_SPECIES.contains(speciesId)
-                || CATCHED_SPECIES.contains("cobblemon:" + speciesId)
-        ) {
+        if (com.levelscraft7.catchindicator.client.PokedexRefreshManager.isSpeciesCaught(speciesId)) {
             MutableComponent out = cir.getReturnValue().copy();
             out.append(Component.literal(" ")).append(CAUGHT_ICON);
             cir.setReturnValue(out);
@@ -144,7 +117,7 @@ public abstract class PokemonEntityNameMixin {
         // Fallback for never caught species: keep your existing behavior
         DiscoveryStatus status = getDiscoveryStatus(pokemon);
         if (status == DiscoveryStatus.CAUGHT) {
-            addSpeciesToCaughtCache(speciesId);
+            com.levelscraft7.catchindicator.client.PokedexRefreshManager.markSpeciesCaught(speciesId);
         }
 
         Component original = cir.getReturnValue();
@@ -561,115 +534,6 @@ public abstract class PokemonEntityNameMixin {
         if (normalized.contains("CAUGHT")) return DiscoveryStatus.CAUGHT;
         if (normalized.contains("SEEN") || normalized.contains("ENCOUNTERED")) return DiscoveryStatus.SEEN;
         return DiscoveryStatus.UNKNOWN;
-    }
-
-    @Unique
-    private static void addSpeciesToCaughtCache(String anyId) {
-        if (anyId == null) return;
-
-        String s = anyId.trim();
-        if (s.isEmpty()) return;
-
-        boolean changed = false;
-
-        // Ajout brut
-        if (CATCHED_SPECIES.add(s)) {
-            changed = true;
-        }
-
-        // Ajouts normalisés
-        try {
-            String ns = s;
-            if (!ns.contains(":")) ns = "cobblemon:" + ns;
-
-            ResourceLocation rl = ResourceLocation.parse(ns);
-
-            if (CATCHED_SPECIES.add(rl.toString())) {
-                changed = true;
-            }
-            if (CATCHED_SPECIES.add(rl.getPath())) {
-                changed = true;
-            }
-        } catch (Throwable ignored) {
-        }
-
-        // On ne déclenche un refresh world que si on a vraiment ajouté quelque chose de nouveau
-        if (changed) {
-            NEEDS_WORLD_NAMETAG_REFRESH = true;
-        }
-    }
-
-
-    @Unique
-    private static void warmCaughtCacheFromPokedexIfNeeded() {
-        try {
-            long now = System.currentTimeMillis();
-            if (now - CATCH_CACHE_LAST_REFRESH_MS < CATCH_CACHE_REFRESH_COOLDOWN_MS) return;
-            CATCH_CACHE_LAST_REFRESH_MS = now;
-
-            Object manager = resolveClientPokedexManager();
-            if (manager == null) return;
-
-            Object recordsObj = invokeFirst(manager, "getSpeciesRecords", "speciesRecords", "getRecords", "records");
-            if (recordsObj == null) {
-                recordsObj = readFieldIfExists(manager, "speciesRecords", "records");
-            }
-
-            if (!(recordsObj instanceof Map<?, ?> records) || records.isEmpty()) return;
-
-            int before = CATCHED_SPECIES.size();
-
-            for (Map.Entry<?, ?> e : records.entrySet()) {
-                Object key = e.getKey();
-                Object record = e.getValue();
-                if (key == null || record == null) continue;
-
-// CAUGHT si au moins une forme est capturée, c’est la voie la plus stable entre versions
-                Object caughtForms = invokeFirstWithArgs(manager, new Object[]{ key }, "getCaughtForms");
-                if (!(caughtForms instanceof java.util.Collection<?> c) || c.isEmpty()) {
-                    // Certains records ne prennent pas la clé, on tente avec la value record
-                    caughtForms = invokeFirstWithArgs(manager, new Object[]{ record }, "getCaughtForms");
-                }
-
-                if (caughtForms instanceof java.util.Collection<?> c2 && !c2.isEmpty()) {
-                    addSpeciesToCaughtCache(key.toString());
-
-                    Object speciesId = invokeFirst(record,
-                            "getSpeciesId", "speciesId", "getId", "id", "getShowdownId", "showdownId");
-                    if (speciesId != null) addSpeciesToCaughtCache(speciesId.toString());
-                }
-
-            }
-
-            int after = CATCHED_SPECIES.size();
-            if (after != CATCH_CACHE_LAST_SIZE_LOGGED) {
-                CATCH_CACHE_LAST_SIZE_LOGGED = after;
-                if (after > before) {
-                    LOGGER.debug("Catch cache warmup: +{} (now {})", (after - before), after);
-                }
-            }
-        } catch (Throwable t) {
-            LOGGER.debug("Caught cache warmup failed", t);
-        }
-    }
-
-    @Unique
-    private static void forceRefreshAllPokemonNametags() {
-        try {
-            Minecraft mc = Minecraft.getInstance();
-            if (mc == null || mc.level == null) return;
-
-            // Force un refresh léger : toggle name visible pour invalider le cache de rendu
-            for (var e : mc.level.entitiesForRendering()) {
-                if (e == null) continue;
-                if (!e.getClass().getName().equals("com.cobblemon.mod.common.entity.pokemon.PokemonEntity")) continue;
-
-                boolean vis = e.isCustomNameVisible();
-                e.setCustomNameVisible(!vis);
-                e.setCustomNameVisible(vis);
-            }
-        } catch (Throwable ignored) {
-        }
     }
 
 }
