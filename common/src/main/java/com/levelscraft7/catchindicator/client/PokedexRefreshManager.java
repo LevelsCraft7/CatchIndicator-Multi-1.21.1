@@ -1,7 +1,9 @@
 package com.levelscraft7.catchindicator.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +44,7 @@ public final class PokedexRefreshManager {
 
     public static void onPokedexSync(Object clientPokedexManager) {
         LOGGER.debug("pokedex sync received");
+
         if (clientPokedexManager == null) return;
 
         Map<?, ?> records = resolveSpeciesRecords(clientPokedexManager);
@@ -55,10 +58,40 @@ public final class PokedexRefreshManager {
             }
         }
 
-        if (changed) {
-            scheduleRefresh();
-        }
+        if (!changed) return;
+
+        // maintenant qu'il y a eu un changement, on force le refresh visuel côté client
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return;
+
+        mc.level.getAllEntities().forEach(entity -> {
+            // filtrer les entités Cobblemon uniquement
+            if (!(entity instanceof LivingEntity living)) return;
+
+            ResourceLocation typeRL = living.getType().getRegistryName();
+            if (typeRL == null) return;
+            if (!"cobblemon".equals(typeRL.getNamespace())) return;
+
+            // marquer l'entité pour un rafraîchissement du nom
+            // si Cobblemon a déjà mis un custom name, ça force la mise à jour
+            if (living.hasCustomName()) {
+                living.setCustomName(living.getCustomName());
+            } else {
+                // refresh interne client pour forcer recalcul de displayName
+                living.refreshDimensions();
+            }
+
+            // envoi d'un packet local pour forcer le renderer à re-lire les données
+            mc.player.connection.send(
+                    new ClientboundSetEntityDataPacket(
+                            living.getId(),
+                            living.getEntityData(),
+                            true
+                    )
+            );
+        });
     }
+
 
     public static void onRecordUpdate(Object clientPokedexManager, Object key, Object record) {
         if (clientPokedexManager == null) return;
