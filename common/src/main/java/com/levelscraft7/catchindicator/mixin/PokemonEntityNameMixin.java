@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Unique;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Client-side: modifies ONLY the in-world Pokémon entity name, not the Pokémon model name everywhere.
