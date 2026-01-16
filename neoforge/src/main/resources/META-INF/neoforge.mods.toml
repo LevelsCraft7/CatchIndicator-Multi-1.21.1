@@ -6,7 +6,7 @@ license = "All Rights Reserved"
 modId = "catchindicator"
 version = "${version}"
 displayName = "Catch Indicator"
-logoFile="assets/catchindicator/icon.png"
+logoFile="assets/catchindicator/logo.png"
 authors = "OurStory x LevelsFR"
 description = '''
 Shows a small indicator next to wild Pokémon names based on your Pokédex status (caught, seen, unknown).
