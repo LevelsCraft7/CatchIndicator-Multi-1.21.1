@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "catchindicator:font/caught.png",
+      "height": 14,
+      "ascent": 10,
+      "chars": [
+        "\ua000"
+      ]
+    }
+  ]
+}

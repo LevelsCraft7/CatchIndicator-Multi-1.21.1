@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.levelscraft7.catchindicator.client.DiscoveryStatus;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +44,11 @@ public abstract class PokemonEntityNameMixin {
             "com.cobblemon.mod.common.Cobblemon"
     };
 
-    // Icon glyph mapped via assets/catchindicator/font/default.json
-    @Unique
-    private static final Component CAUGHT_ICON = Component.literal("● CATCH ●");
+    private static final Component CAUGHT_ICON = Component.literal("\ua000")
+            .withStyle(s -> s
+                    .withFont(new ResourceLocation("catchindicator", "default"))
+                    .withColor(0xFFFFFF)
+            );
 
 
     @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
