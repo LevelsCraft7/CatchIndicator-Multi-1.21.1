@@ -43,7 +43,7 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
 
-        if (project.name == "fabric" || project.name == "common") {
+        if (project.name == "fabric") {
             mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
         } else {
             mappings loom.officialMojangMappings()
