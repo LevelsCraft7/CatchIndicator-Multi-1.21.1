@@ -88,7 +88,7 @@ public final class PokedexRefreshManager {
     }
 
     private static void refreshWorldNametags() {
-        LOGGER.warn("FORCED REFRESH THIS TICK");
+        LOGGER.debug("FORCED REFRESH THIS TICK");
         if (!NEEDS_REFRESH.compareAndSet(true, false)) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc == null || mc.level == null) return;
@@ -103,7 +103,7 @@ public final class PokedexRefreshManager {
             entity.setCustomNameVisible(visible);
             count++;
         }
-        LOGGER.warn("refresh executed: {} entities", count);
+        LOGGER.debug("refresh executed: {} entities", count);
     }
 
     /**
