@@ -8,7 +8,7 @@
     "OurStory x LevelsFR"
   ],
   "license": "All Rights Reserved",
-  "icon": "assets/catchindicator/icon.png",
+  "icon": "assets/catchindicator/logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [

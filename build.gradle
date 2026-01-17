@@ -41,11 +41,10 @@ subprojects {
     }
 
     dependencies {
-        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
-        // Cobblemon's Fabric distribution is built against Fabric's intermediary namespace.
-        // Using Mojang mappings for the Fabric run will remove net.minecraft.class_#### at runtime and crash.
-        if (project.name == "fabric") {
-            mappings "net.fabricmc:yarn:$rootProject.yarn_mappings:v2"
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+
+        if (project.name == "fabric" || project.name == "common") {
+            mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
         } else {
             mappings loom.officialMojangMappings()
         }
